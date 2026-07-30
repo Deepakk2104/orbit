@@ -12,41 +12,100 @@
 * [ ] Initialize Git
 * [ ] Add `.gitignore`
 * [ ] Add `README.md`
-* [ ] Create project folder structure
+* [ ] Create root project structure
+
+---
 
 ## Frontend Setup
 
 * [ ] Initialize Next.js
 * [ ] Configure TypeScript
 * [ ] Install Tailwind CSS
-* [ ] Install shadcn/ui
-* [ ] Configure ESLint
-* [ ] Configure Prettier
-* [ ] Configure Husky
-* [ ] Configure lint-staged
+* [ ] Verify development server
+
+---
 
 ## Backend Setup
 
 * [ ] Initialize Node.js
 * [ ] Configure Express
 * [ ] Configure TypeScript
-* [ ] Configure ESLint
-* [ ] Configure Prettier
+* [ ] Verify development server
+
+---
+
+## Project Structure
+
+### Root
+
+* [ ] Create `.github/workflows`
+* [ ] Create `client`
+* [ ] Create `server`
+* [ ] Create `docs`
+
+### Frontend
+
+* [ ] Create `components`
+* [ ] Create `features`
+* [ ] Create `hooks`
+* [ ] Create `lib`
+* [ ] Create `services`
+* [ ] Create `store`
+* [ ] Create `types`
+* [ ] Create `utils`
+* [ ] Create `constants`
+* [ ] Create `styles`
+
+### Backend
+
+* [ ] Create `config`
+* [ ] Create `modules`
+* [ ] Create `middlewares`
+* [ ] Create `lib`
+* [ ] Create `constants`
+* [ ] Create `types`
+* [ ] Create `utils`
+* [ ] Create `prisma`
+* [ ] Split `app.ts` and `index.ts`
+
+---
 
 ## Database
 
 * [ ] Install PostgreSQL
 * [ ] Initialize Prisma
 * [ ] Configure Prisma Client
+* [ ] Configure `schema.prisma`
 * [ ] Connect Database
 * [ ] Test Database Connection
 
-## Project Structure
+---
 
-* [ ] Create `client/`
-* [ ] Create `server/`
-* [ ] Create `docs/`
-* [ ] Create `.github/`
+## Code Quality
+
+### Frontend
+
+* [ ] Configure ESLint
+* [ ] Configure Prettier
+
+### Backend
+
+* [ ] Configure ESLint
+* [ ] Configure Prettier
+
+### Git Hooks
+
+* [ ] Configure Husky
+* [ ] Configure lint-staged
+
+---
+
+## UI Foundation
+
+* [ ] Install shadcn/ui
+* [ ] Configure shadcn/ui
+
+---
 
 ## Environment Variables
 
@@ -54,12 +113,14 @@
 * [ ] Create `server/.env`
 * [ ] Configure environment variables
 
+---
+
 ## Documentation
 
-* [ ] Create `PROJECT_MEMORY.md`
-* [ ] Create `SYSTEM_DESIGN.md`
-* [ ] Create `TASKS.md`
-* [ ] Create `CONTRIBUTING.md`
+* [ ] Review `PROJECT_MEMORY.md`
+* [ ] Review `SYSTEM_DESIGN.md`
+* [ ] Review `TASKS.md`
+* [ ] Review `CONTRIBUTING.md`
 
 ---
 
@@ -170,7 +231,7 @@
 ## Deployment
 
 * [ ] Deploy Frontend (Vercel)
-* [ ] Deploy Backend (Railway/Render)
+* [ ] Deploy Backend (Railway)
 * [ ] Configure PostgreSQL
 * [ ] Configure Environment Variables
 * [ ] Create Demo Account
@@ -211,7 +272,7 @@
 
 * Build one feature at a time.
 * Never skip unfinished tasks.
+* Every phase must end in a working state.
 * No features outside the MVP scope.
-* Every completed feature should be tested before moving to the next phase.
 * Keep commits small, descriptive, and focused.
 * Update this file after every development session.
