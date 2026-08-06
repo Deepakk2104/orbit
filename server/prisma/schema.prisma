@@ -6,3 +6,191 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum OrganizationRole {
+  OWNER
+  MEMBER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model User {
+  id              String  @id @default(cuid())
+  name            String
+  email           String  @unique
+  password        String
+  avatar          String?
+  isEmailVerified Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedOrganizations Organization[]       @relation("OrganizationOwner")
+  memberships        OrganizationMember[]
+  invitationsSent    Invitation[]
+  createdProjects    Project[]
+  assignedTasks      Task[]               @relation("AssignedTasks")
+  createdTasks       Task[]               @relation("CreatedTasks")
+  comments           Comment[]
+}
+
+model Organization {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  ownerId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner User @relation("OrganizationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  members     OrganizationMember[]
+  projects    Project[]
+  invitations Invitation[]
+
+  @@index([ownerId])
+}
+
+model OrganizationMember {
+  id String @id @default(cuid())
+
+  organizationId String
+  userId         String
+
+  role OrganizationRole @default(MEMBER)
+
+  joinedAt DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+}
+
+model Invitation {
+  id String @id @default(cuid())
+
+  email String
+  token String @unique
+
+  organizationId String
+  invitedById    String
+
+  expiresAt  DateTime
+  acceptedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy    User         @relation(fields: [invitedById], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model Project {
+  id String @id @default(cuid())
+
+  name        String
+  description String?
+
+  organizationId String
+  createdById    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy    User         @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  board Board?
+
+  @@index([organizationId])
+}
+
+model Board {
+  id String @id @default(cuid())
+
+  projectId String @unique
+
+  createdAt DateTime @default(now())
+
+  project Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  columns BoardColumn[]
+}
+
+model BoardColumn {
+  id String @id @default(cuid())
+
+  name String
+
+  position Int
+
+  boardId String
+
+  createdAt DateTime @default(now())
+
+  board Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  tasks Task[]
+
+  @@unique([boardId, position])
+  @@index([boardId])
+}
+
+model Task {
+  id String @id @default(cuid())
+
+  title       String
+  description String?
+
+  priority Priority @default(MEDIUM)
+
+  dueDate DateTime?
+
+  position Int
+
+  columnId String
+
+  assigneeId String?
+
+  createdById String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  column BoardColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  assignee User? @relation("AssignedTasks", fields: [assigneeId], references: [id], onDelete: SetNull)
+
+  createdBy User @relation("CreatedTasks", fields: [createdById], references: [id], onDelete: Cascade)
+
+  comments Comment[]
+
+  @@unique([columnId, position])
+  @@index([columnId])
+  @@index([assigneeId])
+}
+
+model Comment {
+  id String @id @default(cuid())
+
+  content String
+
+  taskId String
+
+  userId String
+
+  createdAt DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+}
