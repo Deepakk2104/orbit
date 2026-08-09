@@ -127,17 +127,17 @@
 
 ## Backend
 
-* [ ] User Registration
-* [ ] User Login
-* [ ] JWT Authentication
+* [x] User Registration
+* [x] User Login
+* [x] JWT Authentication
 * [ ] Refresh Tokens
-* [ ] Password Hashing
-* [ ] Logout
+* [x] Password Hashing
+* [x] Logout
 
 ## Frontend
 
 * [ ] Login Page
-* [ ] Register Page
+* [x] Register Page
 * [ ] Forgot Password Page
 * [ ] Reset Password Page
 * [ ] Protected Routes
