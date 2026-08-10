@@ -5,6 +5,10 @@ import { loginSchema } from "./validators/login.validator.js";
 import { loginUser } from "./auth.service.js";
 import type { AuthRequest } from "../../middlewares/auth.middleware.js";
 import { prisma } from "../../lib/prisma.js";
+import { forgotPasswordSchema } from "./validators/forgot-password.validator.js";
+import { forgotPassword as sendResetEmail } from "./auth.service.js";
+import { resetPasswordSchema } from "./validators/reset-password.validator.js";
+import { resetPassword as resetUserPassword } from "./auth.service.js";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -96,4 +100,50 @@ export const logout = (_req: Request, res: Response) => {
     success: true,
     message: "Logout successful.",
   });
+};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = forgotPasswordSchema.parse(req.body);
+
+    await sendResetEmail(data);
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "If an account exists with that email, a reset link has been sent.",
+    });
+  } catch {
+    return res.status(400).json({
+      success: false,
+      message: "Unable to process password reset request.",
+    });
+  }
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = resetPasswordSchema.parse(req.body);
+
+    await resetUserPassword(data);
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset successfully.",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Unable to reset password.",
+    });
+  }
 };
