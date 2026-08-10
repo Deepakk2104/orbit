@@ -1,3 +1,4 @@
+import type { AuthUser } from "@/store/auth.store";
 import axios from "axios";
 import type { RegisterFormData } from "../schemas/register.schema";
 import type { LoginFormData } from "../schemas/login.schema";
@@ -32,7 +33,6 @@ export const registerUser = async (
   return response.data;
 };
 
-
 export interface LoginResponse {
   success: boolean;
   message: string;
@@ -59,4 +59,20 @@ export const loginUser = async (
   );
 
   return response.data;
+};
+
+export const getCurrentUser = async (
+  accessToken: string
+): Promise<AuthUser> => {
+  const response = await axios.get<{
+    success: boolean;
+    data: AuthUser;
+  }>(`${API_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    withCredentials: true,
+  });
+
+  return response.data.data;
 };

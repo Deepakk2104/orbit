@@ -14,12 +14,16 @@ import {
   type LoginFormData,
 } from "../schemas/login.schema";
 
+import { useAuthStore } from "@/store/auth.store";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   const router = useRouter();
+
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -39,13 +43,8 @@ export function LoginForm() {
     try {
       const response = await loginUser(data);
 
-      /*
-       * For now we only verify the complete backend flow.
-       * Authentication state will be centralized in the
-       * next Phase 2 task.
-       */
-      sessionStorage.setItem(
-        "orbit_access_token",
+      setAuth(
+        response.data.user,
         response.data.accessToken
       );
 
