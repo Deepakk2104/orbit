@@ -136,12 +136,12 @@
 
 ## Frontend
 
-* [ ] Login Page
+* [x] Login Page
 * [x] Register Page
-* [ ] Forgot Password Page
-* [ ] Reset Password Page
-* [ ] Protected Routes
-* [ ] Authentication State
+* [x] Forgot Password Page
+* [x] Reset Password Page
+* [x] Protected Routes
+* [x] Authentication State
 
 ---
 
