@@ -40,11 +40,17 @@ export const registerUser = async (data: RegisterInput) => {
 };
 
 export const loginUser = async (data: LoginInput) => {
+
   const user = await prisma.user.findUnique({
     where: {
       email: data.email,
     },
   });
+
+  console.log("[login] user found?", !!user);
+  if (user) {
+    console.log("[login] stored hash:", user.password);
+  }
 
   if (!user) {
     throw new Error("Invalid email or password");
@@ -54,6 +60,8 @@ export const loginUser = async (data: LoginInput) => {
     data.password,
     user.password
   );
+
+  console.log("[login] password match?", isPasswordCorrect);
 
   if (!isPasswordCorrect) {
     throw new Error("Invalid email or password");
