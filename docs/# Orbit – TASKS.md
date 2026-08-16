@@ -1,6 +1,6 @@
 # Orbit – TASKS.md
 
-> **Project Status:** 🟡 Planning
+> **Project Status:** 🟡 Planning — Phase 2 (Auth) & Phase 3 (Organizations) Complete
 
 ---
 # Phase 1 — Project Setup
@@ -130,7 +130,7 @@
 * [x] User Registration
 * [x] User Login
 * [x] JWT Authentication
-* [ ] Refresh Tokens
+* [x] Refresh Tokens
 * [x] Password Hashing
 * [x] Logout
 
@@ -149,22 +149,22 @@
 
 ## Organization
 
-* [ ] Create Organization
-* [ ] Edit Organization
-* [ ] Delete Organization
+* [x] Create Organization
+* [x] Edit Organization
+* [x] Delete Organization
 
 ## Members
 
-* [ ] Invite Members
-* [ ] Accept Invitation
-* [ ] Remove Members
-* [ ] Switch Organization
+* [x] Invite Members
+* [x] Accept Invitation
+* [x] Remove Members
+* [x] Switch Organization
 
 ## Roles
 
-* [ ] Owner Role
-* [ ] Member Role
-* [ ] Backend Authorization
+* [x] Owner Role
+* [x] Member Role
+* [x] Backend Authorization
 
 ---
 

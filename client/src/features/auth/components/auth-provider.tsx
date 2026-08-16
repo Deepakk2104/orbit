@@ -1,42 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuthStore } from "@/store/auth.store";
-import { getCurrentUser } from "../api/auth.api";
+import { refreshSession } from "../api/auth.api";
 
 export function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const {
-    accessToken,
-    setAuth,
-    clearAuth,
-  } = useAuthStore();
-
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     const restoreSession = async () => {
-      if (!accessToken) {
-        setIsHydrated(true);
-        return;
-      }
+      await refreshSession();
 
-      try {
-        const user = await getCurrentUser(accessToken);
-
-        setAuth(user, accessToken);
-      } catch {
-        clearAuth();
-      } finally {
-        setIsHydrated(true);
-      }
+      setIsHydrated(true);
     };
 
     restoreSession();
-  }, [accessToken, setAuth, clearAuth]);
+  }, []);
 
   if (!isHydrated) {
     return (

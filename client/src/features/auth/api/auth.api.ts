@@ -1,10 +1,8 @@
 import type { AuthUser } from "@/store/auth.store";
-import axios from "axios";
+import { useAuthStore } from "@/store/auth.store";
+import { apiClient } from "@/lib/api-client";
 import type { RegisterFormData } from "../schemas/register.schema";
 import type { LoginFormData } from "../schemas/login.schema";
-
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api";
 
 export interface RegisterResponse {
   success: boolean;
@@ -21,8 +19,8 @@ export interface RegisterResponse {
 export const registerUser = async (
   data: RegisterFormData
 ): Promise<RegisterResponse> => {
-  const response = await axios.post<RegisterResponse>(
-    `${API_URL}/auth/register`,
+  const response = await apiClient.post<RegisterResponse>(
+    "/auth/register",
     {
       name: data.name,
       email: data.email,
@@ -38,62 +36,63 @@ export interface LoginResponse {
   message: string;
   data: {
     accessToken: string;
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      avatar: string | null;
-    };
+    user: AuthUser;
   };
 }
 
 export const loginUser = async (
   data: LoginFormData
 ): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(
-    `${API_URL}/auth/login`,
-    data,
-    {
-      withCredentials: true,
-    }
+  const response = await apiClient.post<LoginResponse>(
+    "/auth/login",
+    data
   );
 
   return response.data;
 };
 
-export const getCurrentUser = async (
-  accessToken: string
-): Promise<AuthUser> => {
-  const response = await axios.get<{
+export const getCurrentUser = async (): Promise<AuthUser> => {
+  const response = await apiClient.get<{
     success: boolean;
     data: AuthUser;
-  }>(`${API_URL}/auth/me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    withCredentials: true,
-  });
+  }>("/auth/me");
 
   return response.data.data;
 };
-export const forgotPassword = async (
-  email: string
-) => {
-  const response = await axios.post(
-    `${API_URL}/auth/forgot-password`,
-    { email }
-  );
+
+export const refreshSession = async (): Promise<boolean> => {
+  try {
+    const response = await apiClient.post<LoginResponse>("/auth/refresh");
+
+    const { data } = response.data;
+
+    useAuthStore.getState().setAuth(data.user, data.accessToken);
+
+    return true;
+  } catch {
+    useAuthStore.getState().clearAuth();
+
+    return false;
+  }
+};
+
+export const logout = async (): Promise<void> => {
+  await apiClient.post("/auth/logout");
+};
+
+export const forgotPassword = async (email: string) => {
+  const response = await apiClient.post("/auth/forgot-password", {
+    email,
+  });
 
   return response.data;
 };
+
 export const resetPassword = async (data: {
   token: string;
   password: string;
 }) => {
-  const response = await axios.post(
-    `${API_URL}/auth/reset-password`,
-    data
-  );
+  const response = await apiClient.post("/auth/reset-password", data);
 
   return response.data;
 };

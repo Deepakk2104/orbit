@@ -1,7 +1,10 @@
 import crypto from "crypto";
 import { prisma } from "../../lib/prisma.js";
 import { hashPassword, comparePassword } from "../../utils/password.js";
-import { generateAccessToken } from "../../utils/jwt.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../../utils/jwt.js";
 import { sendPasswordResetEmail } from "../../utils/mail.js";
 import type { RegisterInput } from "./validators/register.validator.js";
 import type { LoginInput } from "./validators/login.validator.js";
@@ -47,11 +50,6 @@ export const loginUser = async (data: LoginInput) => {
     },
   });
 
-  console.log("[login] user found?", !!user);
-  if (user) {
-    console.log("[login] stored hash:", user.password);
-  }
-
   if (!user) {
     throw new Error("Invalid email or password");
   }
@@ -61,22 +59,46 @@ export const loginUser = async (data: LoginInput) => {
     user.password
   );
 
-  console.log("[login] password match?", isPasswordCorrect);
-
   if (!isPasswordCorrect) {
     throw new Error("Invalid email or password");
   }
 
   const accessToken = generateAccessToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
 
   return {
     accessToken,
+    refreshToken,
     user: {
       id: user.id,
       name: user.name,
       email: user.email,
       avatar: user.avatar,
     },
+  };
+};
+
+export const refreshUserSession = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      avatar: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error("Invalid refresh token");
+  }
+
+  return {
+    accessToken: generateAccessToken(user.id),
+    refreshToken: generateRefreshToken(user.id),
+    user,
   };
 };
 

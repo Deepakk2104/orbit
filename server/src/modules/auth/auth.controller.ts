@@ -9,6 +9,20 @@ import { forgotPasswordSchema } from "./validators/forgot-password.validator.js"
 import { forgotPassword as sendResetEmail } from "./auth.service.js";
 import { resetPasswordSchema } from "./validators/reset-password.validator.js";
 import { resetPassword as resetUserPassword } from "./auth.service.js";
+import { refreshUserSession } from "./auth.service.js";
+import { verifyRefreshToken } from "../../utils/jwt.js";
+
+const REFRESH_COOKIE = "refreshToken";
+const REFRESH_TOKEN_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+const setRefreshCookie = (res: Response, token: string) => {
+  res.cookie(REFRESH_COOKIE, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: REFRESH_TOKEN_MAX_AGE_MS,
+  });
+};
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -41,14 +55,64 @@ export const login = async (req: Request, res: Response) => {
 
     const result = await loginUser(data);
 
+    setRefreshCookie(res, result.refreshToken);
+
     return res.status(200).json({
       success: true,
       message: "Login successful.",
-      data: result,
+      data: {
+        accessToken: result.accessToken,
+        user: result.user,
+      },
     });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies?.[REFRESH_COOKIE];
+
+    if (typeof token !== "string" || !token) {
+      return res.status(401).json({
+        success: false,
+        message: "Refresh token missing",
+      });
+    }
+
+    const userId = verifyRefreshToken(token);
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired refresh token",
+      });
+    }
+
+    const result = await refreshUserSession(userId);
+
+    setRefreshCookie(res, result.refreshToken);
+
+    return res.json({
+      success: true,
+      data: {
+        accessToken: result.accessToken,
+        user: result.user,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(401).json({
         success: false,
         message: error.message,
       });
@@ -90,7 +154,7 @@ export const me = async (
   });
 };
 export const logout = (_req: Request, res: Response) => {
-  res.clearCookie("refreshToken", {
+  res.clearCookie(REFRESH_COOKIE, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
