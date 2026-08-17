@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import { createTask } from "@/features/tasks/api/tasks.api";
 import type { BoardColumn } from "../types";
+import { boardQueryKey, appendTask } from "../lib/board-cache";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,15 +32,13 @@ export function AddTaskForm({
         title,
         priority: "MEDIUM",
       }),
-    onSuccess: () => {
+    onSuccess: (task) => {
       setTitle("");
       setOpen(false);
 
       toast.success("Task created successfully.");
 
-      queryClient.invalidateQueries({
-        queryKey: ["board", orgId, projectId],
-      });
+      appendTask(queryClient, boardQueryKey(orgId, projectId), task);
     },
     onError: () => {
       toast.error("Unable to create task.");

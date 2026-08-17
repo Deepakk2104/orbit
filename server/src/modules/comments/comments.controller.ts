@@ -6,17 +6,7 @@ import {
   listComments,
 } from "./comments.service.js";
 import { createCommentSchema } from "./validators/create.validator.js";
-
-const handleError = (
-  res: Response,
-  error: unknown,
-  fallback = "Internal Server Error"
-) => {
-  return res.status(400).json({
-    success: false,
-    message: error instanceof Error ? error.message : fallback,
-  });
-};
+import { handleError } from "../../lib/handle-error.js";
 
 const getTaskId = (req: ProjectRequest, res: Response) => {
   const taskId = req.params.taskId;

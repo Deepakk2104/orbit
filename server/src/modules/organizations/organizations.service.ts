@@ -3,6 +3,7 @@ import { slugify } from "../../utils/slug.js";
 import type { CreateOrganizationInput } from "./validators/create.validator.js";
 import type { UpdateOrganizationInput } from "./validators/update.validator.js";
 import type { OrganizationView } from "./organizations.types.js";
+import { notFoundError } from "../../lib/errors.js";
 
 const createUniqueSlug = async (baseSlug: string): Promise<string> => {
   const existing = await prisma.organization.findUnique({
@@ -123,7 +124,7 @@ export const getOrganization = async (orgId: string, userId: string) => {
   });
 
   if (!membership) {
-    throw new Error("Organization not found or access denied");
+    throw notFoundError("Organization not found or access denied");
   }
 
   const { organization } = membership;
@@ -154,7 +155,7 @@ export const updateOrganization = async (
   });
 
   if (!current) {
-    throw new Error("Organization not found");
+    throw notFoundError("Organization not found");
   }
 
   const baseSlug = slugify(data.name);
@@ -190,7 +191,7 @@ export const deleteOrganization = async (orgId: string) => {
   });
 
   if (!organization) {
-    throw new Error("Organization not found");
+    throw notFoundError("Organization not found");
   }
 
   await prisma.organization.delete({

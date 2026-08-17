@@ -3,6 +3,7 @@ import type { CreateTaskInput } from "./validators/create.validator.js";
 import type { UpdateTaskInput } from "./validators/update.validator.js";
 import type { MoveTaskInput } from "./validators/move.validator.js";
 import type { TaskView } from "./tasks.types.js";
+import { badRequestError, notFoundError } from "../../lib/errors.js";
 
 const taskSelect = {
   id: true,
@@ -43,24 +44,6 @@ const toTaskView = (task: TaskRecord): TaskView => ({
   dueDate: task.dueDate ? task.dueDate.toISOString() : null,
 });
 
-const getProject = async (orgId: string, projectId: string) => {
-  const project = await prisma.project.findFirst({
-    where: {
-      id: projectId,
-      organizationId: orgId,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!project) {
-    throw new Error("Project not found or access denied");
-  }
-
-  return project;
-};
-
 const verifyAssignee = async (orgId: string, assigneeId: string | null) => {
   if (!assigneeId) {
     return;
@@ -79,7 +62,7 @@ const verifyAssignee = async (orgId: string, assigneeId: string | null) => {
   });
 
   if (!member) {
-    throw new Error("Assignee is not a member of this organization");
+    throw badRequestError("Assignee is not a member of this organization");
   }
 };
 
@@ -90,8 +73,6 @@ export const createTask = async (
   createdById: string,
   data: CreateTaskInput
 ): Promise<TaskView> => {
-  await getProject(orgId, projectId);
-
   const column = await prisma.boardColumn.findFirst({
     where: {
       id: columnId,
@@ -105,7 +86,7 @@ export const createTask = async (
   });
 
   if (!column) {
-    throw new Error("Column not found or access denied");
+    throw notFoundError("Column not found or access denied");
   }
 
   await verifyAssignee(orgId, data.assigneeId ?? null);
@@ -142,8 +123,6 @@ export const updateTask = async (
   taskId: string,
   data: UpdateTaskInput
 ): Promise<TaskView> => {
-  await getProject(orgId, projectId);
-
   const task = await prisma.task.findFirst({
     where: {
       id: taskId,
@@ -159,7 +138,7 @@ export const updateTask = async (
   });
 
   if (!task) {
-    throw new Error("Task not found or access denied");
+    throw notFoundError("Task not found or access denied");
   }
 
   await verifyAssignee(orgId, data.assigneeId ?? null);
@@ -188,8 +167,6 @@ export const deleteTask = async (
   projectId: string,
   taskId: string
 ) => {
-  await getProject(orgId, projectId);
-
   const task = await prisma.task.findFirst({
     where: {
       id: taskId,
@@ -207,7 +184,7 @@ export const deleteTask = async (
   });
 
   if (!task) {
-    throw new Error("Task not found or access denied");
+    throw notFoundError("Task not found or access denied");
   }
 
   await prisma.$transaction([
@@ -238,8 +215,6 @@ export const moveTask = async (
   taskId: string,
   data: MoveTaskInput
 ) => {
-  await getProject(orgId, projectId);
-
   const task = await prisma.task.findFirst({
     where: {
       id: taskId,
@@ -257,7 +232,7 @@ export const moveTask = async (
   });
 
   if (!task) {
-    throw new Error("Task not found or access denied");
+    throw notFoundError("Task not found or access denied");
   }
 
   const targetColumn = await prisma.boardColumn.findFirst({
@@ -273,7 +248,7 @@ export const moveTask = async (
   });
 
   if (!targetColumn) {
-    throw new Error("Column not found or access denied");
+    throw notFoundError("Column not found or access denied");
   }
 
   const currentColumnId = task.columnId;
@@ -286,6 +261,17 @@ export const moveTask = async (
 
   await prisma.$transaction(async (tx) => {
     if (currentColumnId === targetColumn.id) {
+      const sentinel = 1_000_000;
+
+      await tx.task.update({
+        where: {
+          id: taskId,
+        },
+        data: {
+          position: sentinel,
+        },
+      });
+
       if (newPosition > currentPosition) {
         await tx.task.updateMany({
           where: {
@@ -302,17 +288,6 @@ export const moveTask = async (
           },
         });
       } else {
-        const sentinel = 1_000_000;
-
-        await tx.task.update({
-          where: {
-            id: taskId,
-          },
-          data: {
-            position: sentinel,
-          },
-        });
-
         await tx.task.updateMany({
           where: {
             columnId: currentColumnId,
@@ -327,16 +302,16 @@ export const moveTask = async (
             },
           },
         });
-
-        await tx.task.update({
-          where: {
-            id: taskId,
-          },
-          data: {
-            position: newPosition,
-          },
-        });
       }
+
+      await tx.task.update({
+        where: {
+          id: taskId,
+        },
+        data: {
+          position: newPosition,
+        },
+      });
     } else {
       const sentinel = 1_000_000;
 

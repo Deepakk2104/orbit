@@ -3,6 +3,7 @@ import { prisma } from "../../lib/prisma.js";
 import type { CreateProjectInput } from "./validators/create.validator.js";
 import type { UpdateProjectInput } from "./validators/update.validator.js";
 import type { ProjectView } from "./projects.types.js";
+import { notFoundError } from "../../lib/errors.js";
 
 const projectSelect = {
   id: true,
@@ -53,7 +54,7 @@ export const getProject = async (
   });
 
   if (!project) {
-    throw new Error("Project not found or access denied");
+    throw notFoundError("Project not found or access denied");
   }
 
   return project;
@@ -75,7 +76,7 @@ export const updateProject = async (
   });
 
   if (!project) {
-    throw new Error("Project not found or access denied");
+    throw notFoundError("Project not found or access denied");
   }
 
   return prisma.project.update({
@@ -104,7 +105,7 @@ export const deleteProject = async (orgId: string, projectId: string) => {
   });
 
   if (!project) {
-    throw new Error("Project not found or access denied");
+    throw notFoundError("Project not found or access denied");
   }
 
   await prisma.project.delete({

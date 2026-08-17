@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma.js";
 import type { CreateColumnInput } from "./validators/create.validator.js";
 import type { UpdateColumnInput } from "./validators/update.validator.js";
+import { notFoundError } from "../../lib/errors.js";
 
 const getBoardForProject = async (projectId: string) => {
   const board = await prisma.board.findUnique({
@@ -13,7 +14,7 @@ const getBoardForProject = async (projectId: string) => {
   });
 
   if (!board) {
-    throw new Error("Board not found for this project");
+    throw notFoundError("Board not found for this project");
   }
 
   return board;
@@ -70,7 +71,7 @@ export const updateColumn = async (
   });
 
   if (!column) {
-    throw new Error("Column not found or access denied");
+    throw notFoundError("Column not found or access denied");
   }
 
   return prisma.boardColumn.update({
@@ -108,7 +109,7 @@ export const deleteColumn = async (projectId: string, columnId: string) => {
   });
 
   if (!column) {
-    throw new Error("Column not found or access denied");
+    throw notFoundError("Column not found or access denied");
   }
 
   await prisma.$transaction([

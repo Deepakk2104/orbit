@@ -3,17 +3,7 @@ import type { AuthRequest } from "../../middlewares/auth.middleware.js";
 import { changePassword, updateProfile } from "./users.service.js";
 import { updateProfileSchema } from "./validators/update-profile.validator.js";
 import { changePasswordSchema } from "./validators/change-password.validator.js";
-
-const handleError = (
-  res: Response,
-  error: unknown,
-  fallback = "Internal Server Error"
-) => {
-  return res.status(400).json({
-    success: false,
-    message: error instanceof Error ? error.message : fallback,
-  });
-};
+import { handleError } from "../../lib/handle-error.js";
 
 export const update = async (req: AuthRequest, res: Response) => {
   try {

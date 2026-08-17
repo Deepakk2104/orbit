@@ -3,6 +3,7 @@ import { comparePassword, hashPassword } from "../../utils/password.js";
 import type { UpdateProfileInput } from "./validators/update-profile.validator.js";
 import type { ChangePasswordInput } from "./validators/change-password.validator.js";
 import type { ProfileView } from "./users.types.js";
+import { badRequestError, notFoundError } from "../../lib/errors.js";
 
 const profileSelect = {
   id: true,
@@ -58,7 +59,7 @@ export const changePassword = async (
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw notFoundError("User not found");
   }
 
   const isPasswordCorrect = await comparePassword(
@@ -67,7 +68,7 @@ export const changePassword = async (
   );
 
   if (!isPasswordCorrect) {
-    throw new Error("Current password is incorrect");
+    throw badRequestError("Current password is incorrect");
   }
 
   const hashedPassword = await hashPassword(data.newPassword);

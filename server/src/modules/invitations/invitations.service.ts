@@ -3,6 +3,11 @@ import { prisma } from "../../lib/prisma.js";
 import { sendInvitationEmail } from "../../utils/mail.js";
 import type { InviteInput } from "./validators/invite.validator.js";
 import type { MemberView } from "./invitations.types.js";
+import {
+  badRequestError,
+  conflictError,
+  notFoundError,
+} from "../../lib/errors.js";
 
 const INVITATION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -21,7 +26,7 @@ export const inviteMember = async (
   });
 
   if (!organization) {
-    throw new Error("Organization not found");
+    throw notFoundError("Organization not found");
   }
 
   const existingUser = await prisma.user.findUnique({
@@ -47,7 +52,7 @@ export const inviteMember = async (
     });
 
     if (alreadyMember) {
-      throw new Error("This user is already a member");
+      throw conflictError("This user is already a member");
     }
   }
 
@@ -87,15 +92,15 @@ export const acceptInvitation = async (userId: string, token: string) => {
   });
 
   if (!invitation) {
-    throw new Error("Invalid invitation");
+    throw badRequestError("Invalid invitation");
   }
 
   if (invitation.acceptedAt) {
-    throw new Error("This invitation has already been used");
+    throw conflictError("This invitation has already been used");
   }
 
   if (invitation.expiresAt < new Date()) {
-    throw new Error("This invitation has expired");
+    throw badRequestError("This invitation has expired");
   }
 
   const user = await prisma.user.findUnique({
@@ -108,11 +113,11 @@ export const acceptInvitation = async (userId: string, token: string) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw notFoundError("User not found");
   }
 
   if (user.email !== invitation.email) {
-    throw new Error("This invitation was sent to a different email");
+    throw badRequestError("This invitation was sent to a different email");
   }
 
   const alreadyMember = await prisma.organizationMember.findUnique({
@@ -128,7 +133,7 @@ export const acceptInvitation = async (userId: string, token: string) => {
   });
 
   if (alreadyMember) {
-    throw new Error("You are already a member of this organization");
+    throw conflictError("You are already a member of this organization");
   }
 
   const membership = await prisma.$transaction(async (tx) => {
@@ -205,15 +210,15 @@ export const removeMember = async (
   });
 
   if (!membership || membership.organizationId !== orgId) {
-    throw new Error("Member not found in this organization");
+    throw notFoundError("Member not found in this organization");
   }
 
   if (membership.role === "OWNER") {
-    throw new Error("You cannot remove the organization owner");
+    throw badRequestError("You cannot remove the organization owner");
   }
 
   if (membership.userId === requesterId) {
-    throw new Error("You cannot remove yourself");
+    throw badRequestError("You cannot remove yourself");
   }
 
   await prisma.organizationMember.delete({

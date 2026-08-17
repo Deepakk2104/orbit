@@ -11,6 +11,8 @@ import { resetPasswordSchema } from "./validators/reset-password.validator.js";
 import { resetPassword as resetUserPassword } from "./auth.service.js";
 import { refreshUserSession } from "./auth.service.js";
 import { verifyRefreshToken } from "../../utils/jwt.js";
+import { handleError } from "../../lib/handle-error.js";
+import { unauthorizedError } from "../../lib/errors.js";
 
 const REFRESH_COOKIE = "refreshToken";
 const REFRESH_TOKEN_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -36,17 +38,7 @@ export const register = async (req: Request, res: Response) => {
       data: user,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return handleError(res, error);
   }
 };
 export const login = async (req: Request, res: Response) => {
@@ -66,17 +58,7 @@ export const login = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return handleError(res, error);
   }
 };
 export const refresh = async (req: Request, res: Response) => {
@@ -111,44 +93,42 @@ export const refresh = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return res.status(401).json({
-        success: false,
-        message: error.message,
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return handleError(res, error);
   }
 };
 export const me = async (req: AuthRequest, res: Response) => {
-  if (!req.userId) {
-    return res.status(401).json({
-      success: false,
-      message: "Unauthorized",
+  try {
+    if (!req.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatar: true,
+        createdAt: true,
+      },
     });
+
+    if (!user) {
+      throw unauthorizedError("User not found");
+    }
+
+    return res.json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    return handleError(res, error);
   }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id: req.userId,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      avatar: true,
-      createdAt: true,
-    },
-  });
-
-  return res.json({
-    success: true,
-    data: user,
-  });
 };
 export const logout = (_req: Request, res: Response) => {
   res.clearCookie(REFRESH_COOKIE, {
@@ -193,10 +173,6 @@ export const resetPassword = async (req: Request, res: Response) => {
       message: "Password reset successfully.",
     });
   } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message:
-        error instanceof Error ? error.message : "Unable to reset password.",
-    });
+    return handleError(res, error);
   }
 };

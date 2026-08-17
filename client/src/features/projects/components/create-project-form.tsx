@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -22,11 +23,13 @@ export function CreateProjectForm({
   orgId: string;
   onCreated?: () => void;
 }) {
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
@@ -35,15 +38,16 @@ export function CreateProjectForm({
     },
   });
 
-  const onSubmit = async (data: CreateProjectFormData) => {
-    try {
-      await createProject(orgId, data);
-
+  const mutation = useMutation({
+    mutationFn: (data: CreateProjectFormData) => createProject(orgId, data),
+    onSuccess: () => {
       toast.success("Project created successfully.");
       reset();
-
       onCreated?.();
-    } catch (error) {
+
+      queryClient.invalidateQueries({ queryKey: ["projects", orgId] });
+    },
+    onError: (error) => {
       const message =
         typeof error === "object" && error !== null && "response" in error
           ? (
@@ -58,11 +62,14 @@ export function CreateProjectForm({
           : undefined;
 
       toast.error(message ?? "Unable to create project.");
-    }
-  };
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={handleSubmit((data) => mutation.mutate(data))}
+      className="space-y-4"
+    >
       <div className="space-y-2">
         <Label htmlFor="name">Project name</Label>
 
@@ -70,7 +77,7 @@ export function CreateProjectForm({
           id="name"
           placeholder="Website Redesign"
           {...register("name")}
-          disabled={isSubmitting}
+          disabled={mutation.isPending}
         />
 
         {errors.name && (
@@ -87,7 +94,7 @@ export function CreateProjectForm({
           rows={3}
           className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:bg-input/50 dark:bg-input/30 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-2 text-base outline-none transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
           {...register("description")}
-          disabled={isSubmitting}
+          disabled={mutation.isPending}
         />
 
         {errors.description && (
@@ -97,10 +104,10 @@ export function CreateProjectForm({
         )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
+      <Button type="submit" disabled={mutation.isPending}>
+        {mutation.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
 
-        {isSubmitting ? "Creating..." : "Create project"}
+        {mutation.isPending ? "Creating..." : "Create project"}
       </Button>
     </form>
   );

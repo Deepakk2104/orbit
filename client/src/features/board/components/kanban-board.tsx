@@ -15,10 +15,12 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { getBoard } from "../api/boards.api";
 import { moveTask } from "@/features/tasks/api/tasks.api";
 import type { Board, BoardColumn, BoardTask } from "../types";
+import { boardQueryKey } from "../lib/board-cache";
 import { BoardColumnView } from "./board-column";
 import { AddColumnForm } from "./add-column-form";
 import { TaskCard } from "./task-card";
@@ -42,7 +44,7 @@ export function KanbanBoard({
   );
 
   const { data: board, isLoading } = useQuery({
-    queryKey: ["board", orgId, projectId],
+    queryKey: boardQueryKey(orgId, projectId),
     queryFn: () => getBoard(orgId, projectId),
   });
 
@@ -54,8 +56,10 @@ export function KanbanBoard({
   const updateColumns = (
     updater: (columns: BoardColumn[]) => BoardColumn[]
   ) => {
-    queryClient.setQueryData<Board>(["board", orgId, projectId], (current) =>
-      current ? { ...current, columns: updater(current.columns) } : current
+    queryClient.setQueryData<Board>(
+      boardQueryKey(orgId, projectId),
+      (current) =>
+        current ? { ...current, columns: updater(current.columns) } : current
     );
   };
 
@@ -152,56 +156,71 @@ export function KanbanBoard({
       return;
     }
 
-    if (activeColumn.id === overColumn.id) {
-      const tasks = activeColumn.tasks;
-      const oldIndex = tasks.findIndex((task) => task.id === activeId);
+    const snapshot = queryClient.getQueryData<Board>(
+      boardQueryKey(orgId, projectId)
+    );
 
-      if (oldIndex < 0) {
-        return;
+    try {
+      if (activeColumn.id === overColumn.id) {
+        const tasks = activeColumn.tasks;
+        const oldIndex = tasks.findIndex((task) => task.id === activeId);
+
+        if (oldIndex < 0) {
+          return;
+        }
+
+        const overIndex = tasks.findIndex((task) => task.id === overId);
+        const newIndex =
+          overId === activeColumn.id ? tasks.length - 1 : overIndex;
+
+        if (oldIndex === newIndex) {
+          return;
+        }
+
+        updateColumns((current) =>
+          current.map((column) =>
+            column.id === activeColumn.id
+              ? {
+                  ...column,
+                  tasks: arrayMove(column.tasks, oldIndex, newIndex),
+                }
+              : column
+          )
+        );
+
+        await moveTask(orgId, projectId, activeId, {
+          columnId: activeColumn.id,
+          position: newIndex,
+        });
+      } else {
+        const targetColumn = columns.find(
+          (column) => column.id === overColumn.id
+        );
+
+        if (!targetColumn) {
+          return;
+        }
+
+        const newIndex = targetColumn.tasks.findIndex(
+          (task) => task.id === activeId
+        );
+
+        await moveTask(orgId, projectId, activeId, {
+          columnId: targetColumn.id,
+          position: newIndex >= 0 ? newIndex : targetColumn.tasks.length - 1,
+        });
       }
 
-      const overIndex = tasks.findIndex((task) => task.id === overId);
-      const newIndex =
-        overId === activeColumn.id ? tasks.length - 1 : overIndex;
-
-      if (oldIndex === newIndex) {
-        return;
-      }
-
-      updateColumns((current) =>
-        current.map((column) =>
-          column.id === activeColumn.id
-            ? { ...column, tasks: arrayMove(column.tasks, oldIndex, newIndex) }
-            : column
-        )
-      );
-
-      await moveTask(orgId, projectId, activeId, {
-        columnId: activeColumn.id,
-        position: newIndex,
+      queryClient.invalidateQueries({
+        queryKey: boardQueryKey(orgId, projectId),
       });
-    } else {
-      const targetColumn = columns.find(
-        (column) => column.id === overColumn.id
-      );
-
-      if (!targetColumn) {
-        return;
+    } catch {
+      if (snapshot) {
+        queryClient.setQueryData(boardQueryKey(orgId, projectId), snapshot);
       }
 
-      const newIndex = targetColumn.tasks.findIndex(
-        (task) => task.id === activeId
-      );
-
-      await moveTask(orgId, projectId, activeId, {
-        columnId: targetColumn.id,
-        position: newIndex >= 0 ? newIndex : targetColumn.tasks.length - 1,
-      });
+      toast.error("Unable to move task. The board has been restored.");
     }
-
-    queryClient.invalidateQueries({
-      queryKey: ["board", orgId, projectId],
-    });
   };
 
   if (isLoading) {

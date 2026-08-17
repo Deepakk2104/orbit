@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma.js";
 import type { CreateCommentInput } from "./validators/create.validator.js";
 import type { CommentView } from "./comments.types.js";
+import { forbiddenError, notFoundError } from "../../lib/errors.js";
 
 const commentSelect = {
   id: true,
@@ -45,7 +46,7 @@ const getTask = async (orgId: string, projectId: string, taskId: string) => {
   });
 
   if (!task) {
-    throw new Error("Task not found or access denied");
+    throw notFoundError("Task not found or access denied");
   }
 
   return task;
@@ -113,11 +114,11 @@ export const deleteComment = async (
   });
 
   if (!comment) {
-    throw new Error("Comment not found or access denied");
+    throw notFoundError("Comment not found or access denied");
   }
 
   if (comment.userId !== userId) {
-    throw new Error("You can only delete your own comments");
+    throw forbiddenError("You can only delete your own comments");
   }
 
   await prisma.comment.delete({

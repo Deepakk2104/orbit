@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -20,11 +21,13 @@ export function CreateOrganizationForm({
 }: {
   onCreated?: () => void;
 }) {
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<CreateOrganizationFormData>({
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
@@ -32,15 +35,16 @@ export function CreateOrganizationForm({
     },
   });
 
-  const onSubmit = async (data: CreateOrganizationFormData) => {
-    try {
-      await createOrganization(data);
-
+  const mutation = useMutation({
+    mutationFn: (data: CreateOrganizationFormData) => createOrganization(data),
+    onSuccess: () => {
       toast.success("Organization created successfully.");
       reset();
-
       onCreated?.();
-    } catch (error) {
+
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+    onError: (error) => {
       const message =
         typeof error === "object" && error !== null && "response" in error
           ? (
@@ -55,11 +59,14 @@ export function CreateOrganizationForm({
           : undefined;
 
       toast.error(message ?? "Unable to create organization.");
-    }
-  };
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={handleSubmit((data) => mutation.mutate(data))}
+      className="space-y-4"
+    >
       <div className="space-y-2">
         <Label htmlFor="name">Organization name</Label>
 
@@ -67,7 +74,7 @@ export function CreateOrganizationForm({
           id="name"
           placeholder="Acme Corp"
           {...register("name")}
-          disabled={isSubmitting}
+          disabled={mutation.isPending}
         />
 
         {errors.name && (
@@ -75,10 +82,10 @@ export function CreateOrganizationForm({
         )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
+      <Button type="submit" disabled={mutation.isPending}>
+        {mutation.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
 
-        {isSubmitting ? "Creating..." : "Create organization"}
+        {mutation.isPending ? "Creating..." : "Create organization"}
       </Button>
     </form>
   );

@@ -6,6 +6,7 @@ import { Loader2, Plus, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { createColumn } from "../api/columns.api";
+import { boardQueryKey, appendColumn } from "../lib/board-cache";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,14 +25,15 @@ export function AddColumnForm({
 
   const mutation = useMutation({
     mutationFn: () => createColumn(orgId, projectId, { name }),
-    onSuccess: () => {
+    onSuccess: (column) => {
       setName("");
       setOpen(false);
 
       toast.success("Column created successfully.");
 
-      queryClient.invalidateQueries({
-        queryKey: ["board", orgId, projectId],
+      appendColumn(queryClient, boardQueryKey(orgId, projectId), {
+        ...column,
+        tasks: [],
       });
     },
     onError: () => {

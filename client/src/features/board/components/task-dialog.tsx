@@ -10,6 +10,7 @@ import { CommentSection } from "@/features/tasks/components/comment-section";
 import { listMembers } from "@/features/organizations/api/organizations.api";
 import { toDateInputValue } from "../utils/date";
 import type { BoardTask, TaskPriority } from "../types";
+import { boardQueryKey, patchTask, removeTask } from "../lib/board-cache";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -50,14 +51,8 @@ export function TaskDialog({
   const [assigneeId, setAssigneeId] = useState(task.assigneeId ?? "");
   const [error, setError] = useState<string | null>(null);
 
-  const invalidate = () => {
-    queryClient.invalidateQueries({
-      queryKey: ["board", orgId, projectId],
-    });
-  };
-
   const { data: members } = useQuery({
-    queryKey: ["organization-members", orgId],
+    queryKey: ["organization", orgId, "members"],
     queryFn: () => listMembers(orgId),
   });
 
@@ -70,9 +65,16 @@ export function TaskDialog({
         dueDate: dueDate || null,
         assigneeId: assigneeId || null,
       }),
-    onSuccess: () => {
+    onSuccess: (updated) => {
       toast.success("Task updated successfully.");
-      invalidate();
+
+      patchTask(
+        queryClient,
+        boardQueryKey(orgId, projectId),
+        task.id,
+        () => updated
+      );
+
       onClose();
     },
     onError: () => {
@@ -84,7 +86,9 @@ export function TaskDialog({
     mutationFn: () => deleteTask(orgId, projectId, task.id),
     onSuccess: () => {
       toast.success("Task deleted successfully.");
-      invalidate();
+
+      removeTask(queryClient, boardQueryKey(orgId, projectId), task.id);
+
       onClose();
     },
     onError: () => {

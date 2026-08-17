@@ -34,17 +34,24 @@ export const authorizeProject = async (
       });
     }
 
-    const project = await prisma.project.findFirst({
+    const project = await prisma.project.findUnique({
       where: {
         id: projectIdParam,
-        organizationId: req.orgId,
       },
       select: {
         id: true,
+        organizationId: true,
       },
     });
 
     if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    if (project.organizationId !== req.orgId) {
       return res.status(403).json({
         success: false,
         message: "You do not have access to this project",

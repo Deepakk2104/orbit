@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { deleteColumn, updateColumn } from "../api/columns.api";
 import type { BoardColumn, BoardTask } from "../types";
+import { boardQueryKey, patchColumn, removeColumn } from "../lib/board-cache";
 import { TaskCard } from "./task-card";
 import { AddTaskForm } from "./add-task-form";
 
@@ -39,18 +40,21 @@ export function BoardColumnView({
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(column.name);
 
-  const invalidate = () => {
-    queryClient.invalidateQueries({
-      queryKey: ["board", orgId, projectId],
-    });
-  };
-
   const renameMutation = useMutation({
     mutationFn: () => updateColumn(orgId, projectId, column.id, { name }),
-    onSuccess: () => {
+    onSuccess: (updated) => {
       setEditing(false);
       toast.success("Column updated successfully.");
-      invalidate();
+
+      patchColumn(
+        queryClient,
+        boardQueryKey(orgId, projectId),
+        column.id,
+        (c) => ({
+          ...c,
+          name: updated.name,
+        })
+      );
     },
     onError: () => {
       toast.error("Unable to update column.");
@@ -61,7 +65,8 @@ export function BoardColumnView({
     mutationFn: () => deleteColumn(orgId, projectId, column.id),
     onSuccess: () => {
       toast.success("Column deleted successfully.");
-      invalidate();
+
+      removeColumn(queryClient, boardQueryKey(orgId, projectId), column.id);
     },
     onError: () => {
       toast.error("Unable to delete column.");

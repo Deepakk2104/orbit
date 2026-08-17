@@ -7,6 +7,11 @@ import type { RegisterInput } from "./validators/register.validator.js";
 import type { LoginInput } from "./validators/login.validator.js";
 import type { ForgotPasswordInput } from "./validators/forgot-password.validator.js";
 import type { ResetPasswordInput } from "./validators/reset-password.validator.js";
+import {
+  badRequestError,
+  conflictError,
+  unauthorizedError,
+} from "../../lib/errors.js";
 
 export const registerUser = async (data: RegisterInput) => {
   const existingUser = await prisma.user.findUnique({
@@ -16,7 +21,7 @@ export const registerUser = async (data: RegisterInput) => {
   });
 
   if (existingUser) {
-    throw new Error("Email already exists");
+    throw conflictError("Email already exists");
   }
 
   const hashedPassword = await hashPassword(data.password);
@@ -47,13 +52,13 @@ export const loginUser = async (data: LoginInput) => {
   });
 
   if (!user) {
-    throw new Error("Invalid email or password");
+    throw unauthorizedError("Invalid email or password");
   }
 
   const isPasswordCorrect = await comparePassword(data.password, user.password);
 
   if (!isPasswordCorrect) {
-    throw new Error("Invalid email or password");
+    throw unauthorizedError("Invalid email or password");
   }
 
   const accessToken = generateAccessToken(user.id);
@@ -85,7 +90,7 @@ export const refreshUserSession = async (userId: string) => {
   });
 
   if (!user) {
-    throw new Error("Invalid refresh token");
+    throw unauthorizedError("Invalid refresh token");
   }
 
   return {
@@ -135,7 +140,7 @@ export const resetPassword = async (data: ResetPasswordInput) => {
   });
 
   if (!user) {
-    throw new Error("Invalid or expired reset token");
+    throw badRequestError("Invalid or expired reset token");
   }
 
   const hashedPassword = await hashPassword(data.password);

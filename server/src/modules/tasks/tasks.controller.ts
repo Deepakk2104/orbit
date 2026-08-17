@@ -9,17 +9,7 @@ import {
 import { createTaskSchema } from "./validators/create.validator.js";
 import { updateTaskSchema } from "./validators/update.validator.js";
 import { moveTaskSchema } from "./validators/move.validator.js";
-
-const handleError = (
-  res: Response,
-  error: unknown,
-  fallback = "Internal Server Error"
-) => {
-  return res.status(400).json({
-    success: false,
-    message: error instanceof Error ? error.message : fallback,
-  });
-};
+import { handleError } from "../../lib/handle-error.js";
 
 export const create = async (req: ProjectRequest, res: Response) => {
   try {

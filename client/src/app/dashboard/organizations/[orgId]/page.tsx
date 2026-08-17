@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -56,6 +56,19 @@ export default function OrganizationDetailPage() {
     queryKey: ["organization", orgId],
     queryFn: () => getOrganization(orgId),
   });
+
+  useEffect(() => {
+    if (organization && currentOrganization?.id !== organization.id) {
+      setCurrentOrganization({
+        id: organization.id,
+        name: organization.name,
+        slug: organization.slug,
+        role: organization.role,
+        createdAt: organization.createdAt,
+        updatedAt: organization.updatedAt,
+      });
+    }
+  }, [organization, currentOrganization?.id, setCurrentOrganization]);
 
   const {
     register,
@@ -125,17 +138,6 @@ export default function OrganizationDetailPage() {
         </main>
       </ProtectedRoute>
     );
-  }
-
-  if (currentOrganization?.id !== organization.id) {
-    setCurrentOrganization({
-      id: organization.id,
-      name: organization.name,
-      slug: organization.slug,
-      role: organization.role,
-      createdAt: organization.createdAt,
-      updatedAt: organization.updatedAt,
-    });
   }
 
   return (

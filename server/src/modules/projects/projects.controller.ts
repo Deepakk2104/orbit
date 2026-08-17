@@ -9,17 +9,7 @@ import {
 } from "./projects.service.js";
 import { createProjectSchema } from "./validators/create.validator.js";
 import { updateProjectSchema } from "./validators/update.validator.js";
-
-const handleError = (
-  res: Response,
-  error: unknown,
-  fallback = "Internal Server Error"
-) => {
-  return res.status(400).json({
-    success: false,
-    message: error instanceof Error ? error.message : fallback,
-  });
-};
+import { handleError } from "../../lib/handle-error.js";
 
 const getProjectId = (req: OrgRequest, res: Response): string | null => {
   const projectId = req.params.projectId;

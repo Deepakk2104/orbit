@@ -8,8 +8,8 @@ export interface Organization {
   name: string;
   slug: string;
   role: "OWNER" | "MEMBER";
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface OrganizationState {

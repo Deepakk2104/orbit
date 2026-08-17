@@ -9,17 +9,7 @@ import {
 } from "./organizations.service.js";
 import { createOrganizationSchema } from "./validators/create.validator.js";
 import { updateOrganizationSchema } from "./validators/update.validator.js";
-
-const handleError = (
-  res: Response,
-  error: unknown,
-  fallback = "Internal Server Error"
-) => {
-  return res.status(400).json({
-    success: false,
-    message: error instanceof Error ? error.message : fallback,
-  });
-};
+import { handleError } from "../../lib/handle-error.js";
 
 export const create = async (req: OrgRequest, res: Response) => {
   try {

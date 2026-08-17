@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma.js";
 import type { BoardView } from "./boards.types.js";
+import { notFoundError } from "../../lib/errors.js";
 
 export const DEFAULT_COLUMNS = ["To Do", "In Progress", "Done"];
 
@@ -27,20 +28,6 @@ export const getBoard = async (
   orgId: string,
   projectId: string
 ): Promise<BoardView> => {
-  const project = await prisma.project.findFirst({
-    where: {
-      id: projectId,
-      organizationId: orgId,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!project) {
-    throw new Error("Project not found or access denied");
-  }
-
   const board = await prisma.board.findUnique({
     where: {
       projectId,
@@ -70,7 +57,7 @@ export const getBoard = async (
   });
 
   if (!board) {
-    throw new Error("Board not found");
+    throw notFoundError("Board not found");
   }
 
   return {
@@ -89,20 +76,6 @@ export const createBoard = async (
   orgId: string,
   projectId: string
 ): Promise<BoardView> => {
-  const project = await prisma.project.findFirst({
-    where: {
-      id: projectId,
-      organizationId: orgId,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!project) {
-    throw new Error("Project not found or access denied");
-  }
-
   await prisma.$transaction(async (tx) => {
     const created = await tx.board.create({
       data: {
