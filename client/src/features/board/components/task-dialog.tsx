@@ -6,6 +6,7 @@ import { Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { deleteTask, updateTask } from "@/features/tasks/api/tasks.api";
+import { CommentSection } from "@/features/tasks/components/comment-section";
 import { listMembers } from "@/features/organizations/api/organizations.api";
 import { toDateInputValue } from "../utils/date";
 import type { BoardTask, TaskPriority } from "../types";
@@ -109,13 +110,11 @@ export function TaskDialog({
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Edit task</DialogTitle>
 
-          <DialogDescription>
-            Update the task details below.
-          </DialogDescription>
+          <DialogDescription>Update the task details below.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -129,9 +128,7 @@ export function TaskDialog({
               disabled={updateMutation.isPending}
             />
 
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-destructive text-sm">{error}</p>}
           </div>
 
           <div className="space-y-2">
@@ -143,7 +140,7 @@ export function TaskDialog({
               value={description}
               onChange={(event) => setDescription(event.target.value)}
               disabled={updateMutation.isPending}
-              className="w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-2 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 dark:bg-input/30 md:text-sm"
+              className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:bg-input/50 dark:bg-input/30 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-2 text-base outline-none transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
             />
           </div>
 
@@ -153,9 +150,7 @@ export function TaskDialog({
 
               <Select
                 value={priority}
-                onValueChange={(value) =>
-                  setPriority(value as TaskPriority)
-                }
+                onValueChange={(value) => setPriority(value as TaskPriority)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -192,8 +187,8 @@ export function TaskDialog({
               <SelectTrigger className="w-full">
                 <SelectValue>
                   {assigneeId
-                    ? members?.find((member) => member.id === assigneeId)
-                        ?.user.name
+                    ? members?.find((member) => member.id === assigneeId)?.user
+                        .name
                     : "Unassigned"}
                 </SelectValue>
               </SelectTrigger>
@@ -211,6 +206,14 @@ export function TaskDialog({
           </div>
         </div>
 
+        <div className="border-t pt-4">
+          <CommentSection
+            orgId={orgId}
+            projectId={projectId}
+            taskId={task.id}
+          />
+        </div>
+
         <DialogFooter>
           <Button
             variant="destructive"
@@ -223,7 +226,6 @@ export function TaskDialog({
             ) : (
               <Trash2 className="mr-2 size-4" />
             )}
-
             Delete
           </Button>
 
@@ -235,7 +237,6 @@ export function TaskDialog({
             {updateMutation.isPending && (
               <Loader2 className="mr-2 size-4 animate-spin" />
             )}
-
             Save changes
           </Button>
         </DialogFooter>

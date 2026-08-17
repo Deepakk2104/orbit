@@ -1,4 +1,4 @@
-export interface CommentView {
+export interface TaskComment {
   id: string;
   content: string;
   taskId: string;
