@@ -22,20 +22,20 @@ export default function ProjectsPage() {
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-background">
+      <main className="bg-background min-h-screen">
         <div className="mx-auto min-h-screen max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
           <header className="flex flex-wrap items-center justify-between gap-4 border-b pb-6">
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard/organizations"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Back to organizations"
               >
                 <ArrowLeft className="size-5" />
               </Link>
 
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-muted-foreground text-sm font-medium">
                   Orbit
                 </p>
 
@@ -48,7 +48,7 @@ export default function ProjectsPage() {
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
             <section className="space-y-4">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              <h2 className="text-muted-foreground text-sm font-semibold uppercase tracking-wide">
                 Projects
               </h2>
 
@@ -58,9 +58,7 @@ export default function ProjectsPage() {
             <aside>
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">
-                    Create project
-                  </CardTitle>
+                  <CardTitle className="text-base">Create project</CardTitle>
                 </CardHeader>
 
                 <CardContent>

@@ -29,7 +29,7 @@ export function OrganizationList() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-10">
-        <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-5 animate-spin" />
       </div>
     );
   }
@@ -37,11 +37,11 @@ export function OrganizationList() {
   if (!organizations || organizations.length === 0) {
     return (
       <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed px-6 py-12 text-center">
-        <Building2 className="size-8 text-muted-foreground" />
+        <Building2 className="text-muted-foreground size-8" />
 
         <div>
           <p className="font-medium">No organizations yet</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Create your first organization to get started.
           </p>
         </div>
@@ -69,22 +69,18 @@ export function OrganizationList() {
         return (
           <Card
             key={organization.id}
-            className={
-              isActive ? "border-primary bg-primary/5" : undefined
-            }
+            className={isActive ? "border-primary bg-primary/5" : undefined}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-base">
-                {organization.name}
-              </CardTitle>
+              <CardTitle className="text-base">{organization.name}</CardTitle>
 
-              <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium uppercase text-muted-foreground">
+              <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs font-medium uppercase">
                 {organization.role}
               </span>
             </CardHeader>
 
             <CardContent className="flex flex-row items-center justify-between">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {organization.slug}
               </p>
 

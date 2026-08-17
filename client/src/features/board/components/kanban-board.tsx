@@ -54,12 +54,8 @@ export function KanbanBoard({
   const updateColumns = (
     updater: (columns: BoardColumn[]) => BoardColumn[]
   ) => {
-    queryClient.setQueryData<Board>(
-      ["board", orgId, projectId],
-      (current) =>
-        current
-          ? { ...current, columns: updater(current.columns) }
-          : current
+    queryClient.setQueryData<Board>(["board", orgId, projectId], (current) =>
+      current ? { ...current, columns: updater(current.columns) } : current
     );
   };
 
@@ -75,9 +71,7 @@ export function KanbanBoard({
 
   const findColumn = (id: string) =>
     columnMap[id] ??
-    columns.find((column) =>
-      column.tasks.some((task) => task.id === id)
-    );
+    columns.find((column) => column.tasks.some((task) => task.id === id));
 
   const handleDragStart = ({ active }: DragStartEvent) => {
     const activeId = String(active.id);
@@ -213,7 +207,7 @@ export function KanbanBoard({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-5 animate-spin" />
       </div>
     );
   }

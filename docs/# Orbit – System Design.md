@@ -133,13 +133,13 @@ This keeps each feature isolated, maintainable, and easy to scale.
 
 The frontend is responsible for:
 
-* Rendering UI
-* Authentication state
-* Form validation
-* API communication
-* Client-side routing
-* State management
-* Drag & Drop interactions
+- Rendering UI
+- Authentication state
+- Form validation
+- API communication
+- Client-side routing
+- State management
+- Drag & Drop interactions
 
 The frontend must never contain business logic related to permissions or database operations.
 
@@ -149,14 +149,14 @@ The frontend must never contain business logic related to permissions or databas
 
 The backend is responsible for:
 
-* Authentication
-* Authorization
-* Business logic
-* Validation
-* Database operations
-* Permission checks
-* Error handling
-* API responses
+- Authentication
+- Authorization
+- Business logic
+- Validation
+- Database operations
+- Permission checks
+- Error handling
+- API responses
 
 All sensitive logic remains on the server.
 
@@ -214,8 +214,8 @@ Orbit implements Role-Based Access Control (RBAC).
 
 Roles:
 
-* Owner
-* Member
+- Owner
+- Member
 
 Authorization checks are performed on the backend.
 
@@ -309,12 +309,12 @@ Every new feature should be added to these directories instead of creating new t
 
 # Security Principles
 
-* Passwords are hashed.
-* JWT protects private endpoints.
-* Authorization is enforced server-side.
-* Sensitive data is never exposed.
-* Environment variables store secrets.
-* Input validation occurs before business logic.
+- Passwords are hashed.
+- JWT protects private endpoints.
+- Authorization is enforced server-side.
+- Sensitive data is never exposed.
+- Environment variables store secrets.
+- Input validation occurs before business logic.
 
 ---
 
@@ -324,12 +324,12 @@ The architecture should support future additions without major refactoring.
 
 Examples include:
 
-* AI
-* Docker
-* AWS
-* Notifications
-* Real-time collaboration
-* Analytics
+- AI
+- Docker
+- AWS
+- Notifications
+- Real-time collaboration
+- Analytics
 
 These are intentionally outside the MVP.
 
@@ -337,13 +337,13 @@ These are intentionally outside the MVP.
 
 # Development Principles
 
-* Build one feature at a time.
-* Keep modules isolated.
-* Keep components reusable.
-* Keep business logic inside services.
-* Prefer readability over clever code.
-* Keep APIs predictable.
-* Build production-quality code from the beginning.
+- Build one feature at a time.
+- Keep modules isolated.
+- Keep components reusable.
+- Keep business logic inside services.
+- Prefer readability over clever code.
+- Keep APIs predictable.
+- Build production-quality code from the beginning.
 
 ---
 
@@ -351,13 +351,13 @@ These are intentionally outside the MVP.
 
 The following are excluded from the MVP:
 
-* AI
-* Real-time communication
-* Docker production deployment
-* AWS infrastructure
-* Analytics
-* Calendar
-* Advanced notifications
+- AI
+- Real-time communication
+- Docker production deployment
+- AWS infrastructure
+- Analytics
+- Calendar
+- Advanced notifications
 
 These will be considered only after the MVP is complete.
 
@@ -367,9 +367,9 @@ These will be considered only after the MVP is complete.
 
 Orbit is considered successful if it is:
 
-* Maintainable
-* Modular
-* Scalable
-* Secure
-* Easy to understand
-* Production-ready
+- Maintainable
+- Modular
+- Scalable
+- Secure
+- Easy to understand
+- Production-ready

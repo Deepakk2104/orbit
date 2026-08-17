@@ -14,10 +14,10 @@ Orbit is built as a production-ready software project.
 
 Every decision should prioritize:
 
-* Readability
-* Maintainability
-* Scalability
-* Simplicity
+- Readability
+- Maintainability
+- Scalability
+- Simplicity
 
 Avoid unnecessary complexity.
 
@@ -86,22 +86,22 @@ style: improve dashboard layout
 
 Before merging:
 
-* Feature works correctly.
-* No TypeScript errors.
-* No ESLint errors.
-* Project builds successfully.
-* Documentation is updated if necessary.
+- Feature works correctly.
+- No TypeScript errors.
+- No ESLint errors.
+- Project builds successfully.
+- Documentation is updated if necessary.
 
 ---
 
 # Coding Standards
 
-* Use TypeScript everywhere.
-* Prefer simple, readable code.
-* Keep functions focused on one responsibility.
-* Avoid duplicate code.
-* Use meaningful variable and function names.
-* Write reusable components where appropriate.
+- Use TypeScript everywhere.
+- Prefer simple, readable code.
+- Keep functions focused on one responsibility.
+- Avoid duplicate code.
+- Use meaningful variable and function names.
+- Write reusable components where appropriate.
 
 ---
 
@@ -119,10 +119,10 @@ Keep frontend and backend responsibilities separate.
 
 Whenever a significant change is made:
 
-* Update `TASKS.md`
-* Update `PROJECT_MEMORY.md` if the MVP scope changes.
-* Update `SYSTEM_DESIGN.md` if the architecture changes.
-* Update any relevant documentation.
+- Update `TASKS.md`
+- Update `PROJECT_MEMORY.md` if the MVP scope changes.
+- Update `SYSTEM_DESIGN.md` if the architecture changes.
+- Update any relevant documentation.
 
 Documentation is part of the project—not an afterthought.
 
@@ -134,13 +134,13 @@ Do not implement features outside the MVP unless they have been explicitly appro
 
 Examples of features that should **not** be added during MVP:
 
-* AI features
-* Real-time collaboration
-* Docker production setup
-* AWS infrastructure
-* Analytics
-* Calendar
-* Notifications
+- AI features
+- Real-time collaboration
+- Docker production setup
+- AWS infrastructure
+- Analytics
+- Calendar
+- Notifications
 
 The objective is to finish the MVP before expanding the scope.
 
@@ -150,23 +150,23 @@ The objective is to finish the MVP before expanding the scope.
 
 A task is considered complete only if:
 
-* Functionality works as expected.
-* Code follows project standards.
-* Errors are handled.
-* The UI is responsive (where applicable).
-* Documentation is updated.
-* The task is checked off in `TASKS.md`.
+- Functionality works as expected.
+- Code follows project standards.
+- Errors are handled.
+- The UI is responsive (where applicable).
+- Documentation is updated.
+- The task is checked off in `TASKS.md`.
 
 ---
 
 # Engineering Principles
 
-* Build one feature at a time.
-* Keep commits small and focused.
-* Prefer composition over duplication.
-* Optimize for maintainability.
-* Keep the codebase consistent.
-* Solve the root problem instead of adding workarounds.
+- Build one feature at a time.
+- Keep commits small and focused.
+- Prefer composition over duplication.
+- Optimize for maintainability.
+- Keep the codebase consistent.
+- Solve the root problem instead of adding workarounds.
 
 ---
 

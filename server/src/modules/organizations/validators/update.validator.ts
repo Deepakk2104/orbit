@@ -7,6 +7,4 @@ export const updateOrganizationSchema = z.object({
     .max(50, "Organization name must be less than 50 characters"),
 });
 
-export type UpdateOrganizationInput = z.infer<
-  typeof updateOrganizationSchema
->;
+export type UpdateOrganizationInput = z.infer<typeof updateOrganizationSchema>;

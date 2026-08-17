@@ -159,9 +159,7 @@ export const updateOrganization = async (
 
   const baseSlug = slugify(data.name);
   const slug =
-    baseSlug === current.slug
-      ? current.slug
-      : await createUniqueSlug(baseSlug);
+    baseSlug === current.slug ? current.slug : await createUniqueSlug(baseSlug);
 
   return prisma.organization.update({
     where: {

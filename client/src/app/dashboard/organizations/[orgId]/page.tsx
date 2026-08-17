@@ -28,12 +28,7 @@ import { useOrganizationStore } from "@/store/organization.store";
 import { cn } from "@/lib/utils";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -125,8 +120,8 @@ export default function OrganizationDetailPage() {
   if (isLoading || !organization) {
     return (
       <ProtectedRoute>
-        <main className="flex min-h-screen items-center justify-center bg-background">
-          <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        <main className="bg-background flex min-h-screen items-center justify-center">
+          <Loader2 className="text-muted-foreground size-6 animate-spin" />
         </main>
       </ProtectedRoute>
     );
@@ -145,20 +140,20 @@ export default function OrganizationDetailPage() {
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-background">
+      <main className="bg-background min-h-screen">
         <div className="mx-auto min-h-screen max-w-5xl px-6 py-8 sm:px-8 lg:px-10">
           <header className="flex flex-wrap items-center justify-between gap-4 border-b pb-6">
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard/organizations"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Back to organizations"
               >
                 <ArrowLeft className="size-5" />
               </Link>
 
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-muted-foreground text-sm font-medium">
                   Orbit
                 </p>
 
@@ -176,13 +171,12 @@ export default function OrganizationDetailPage() {
                 )}
               >
                 <FolderKanban className="mr-2 size-3.5" />
-
                 Projects
               </Link>
 
               <OrganizationSwitcher />
 
-              <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium uppercase text-muted-foreground">
+              <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs font-medium uppercase">
                 {organization.role}
               </span>
             </div>
@@ -192,9 +186,7 @@ export default function OrganizationDetailPage() {
             <section className="space-y-8">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                  <CardTitle className="text-base">
-                    Organization
-                  </CardTitle>
+                  <CardTitle className="text-base">Organization</CardTitle>
 
                   {isOwner && !editing && (
                     <Button
@@ -203,7 +195,6 @@ export default function OrganizationDetailPage() {
                       onClick={() => setEditing(true)}
                     >
                       <Pencil className="mr-2 size-3.5" />
-
                       Edit
                     </Button>
                   )}
@@ -218,9 +209,7 @@ export default function OrganizationDetailPage() {
                       className="space-y-4"
                     >
                       <div className="space-y-2">
-                        <Label htmlFor="name">
-                          Organization name
-                        </Label>
+                        <Label htmlFor="name">Organization name</Label>
 
                         <Input
                           id="name"
@@ -229,7 +218,7 @@ export default function OrganizationDetailPage() {
                         />
 
                         {errors.name && (
-                          <p className="text-sm text-destructive">
+                          <p className="text-destructive text-sm">
                             {errors.name.message}
                           </p>
                         )}
@@ -243,7 +232,6 @@ export default function OrganizationDetailPage() {
                           {updateMutation.isPending && (
                             <Loader2 className="mr-2 size-4 animate-spin" />
                           )}
-
                           Save
                         </Button>
 
@@ -259,23 +247,15 @@ export default function OrganizationDetailPage() {
                   ) : (
                     <dl className="space-y-3 text-sm">
                       <div className="flex justify-between">
-                        <dt className="text-muted-foreground">
-                          Name
-                        </dt>
+                        <dt className="text-muted-foreground">Name</dt>
 
-                        <dd className="font-medium">
-                          {organization.name}
-                        </dd>
+                        <dd className="font-medium">{organization.name}</dd>
                       </div>
 
                       <div className="flex justify-between">
-                        <dt className="text-muted-foreground">
-                          Slug
-                        </dt>
+                        <dt className="text-muted-foreground">Slug</dt>
 
-                        <dd className="font-medium">
-                          {organization.slug}
-                        </dd>
+                        <dd className="font-medium">{organization.slug}</dd>
                       </div>
                     </dl>
                   )}
@@ -284,9 +264,7 @@ export default function OrganizationDetailPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">
-                    Members
-                  </CardTitle>
+                  <CardTitle className="text-base">Members</CardTitle>
                 </CardHeader>
 
                 <CardContent>
@@ -299,9 +277,7 @@ export default function OrganizationDetailPage() {
               {isOwner && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-base">
-                      Invite members
-                    </CardTitle>
+                    <CardTitle className="text-base">Invite members</CardTitle>
                   </CardHeader>
 
                   <CardContent>
@@ -313,15 +289,15 @@ export default function OrganizationDetailPage() {
               {isOwner && (
                 <Card className="border-destructive/40">
                   <CardHeader>
-                    <CardTitle className="text-base text-destructive">
+                    <CardTitle className="text-destructive text-base">
                       Danger zone
                     </CardTitle>
                   </CardHeader>
 
                   <CardContent>
-                    <p className="mb-4 text-sm text-muted-foreground">
-                      Deleting this organization removes all projects,
-                      boards, and tasks. This action cannot be undone.
+                    <p className="text-muted-foreground mb-4 text-sm">
+                      Deleting this organization removes all projects, boards,
+                      and tasks. This action cannot be undone.
                     </p>
 
                     <Button
@@ -334,7 +310,6 @@ export default function OrganizationDetailPage() {
                       ) : (
                         <Trash2 className="mr-2 size-4" />
                       )}
-
                       Delete organization
                     </Button>
                   </CardContent>

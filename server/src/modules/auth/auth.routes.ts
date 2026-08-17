@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { forgotPassword, logout, refresh, register, resetPassword, } from "./auth.controller.js";
+import {
+  forgotPassword,
+  logout,
+  refresh,
+  register,
+  resetPassword,
+} from "./auth.controller.js";
 import { login } from "./auth.controller.js";
 import { authenticate } from "../../middlewares/auth.middleware.js";
 import { me } from "./auth.controller.js";

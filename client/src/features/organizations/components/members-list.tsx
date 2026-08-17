@@ -22,8 +22,7 @@ export function MembersList({ orgId }: { orgId: string }) {
   });
 
   const removeMutation = useMutation({
-    mutationFn: (memberId: string) =>
-      removeMember(orgId, memberId),
+    mutationFn: (memberId: string) => removeMember(orgId, memberId),
     onSuccess: () => {
       toast.success("Member removed successfully.");
 
@@ -33,9 +32,7 @@ export function MembersList({ orgId }: { orgId: string }) {
     },
     onError: (error) => {
       const message =
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error
+        typeof error === "object" && error !== null && "response" in error
           ? (
               error as {
                 response?: {
@@ -54,14 +51,14 @@ export function MembersList({ orgId }: { orgId: string }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-5 animate-spin" />
       </div>
     );
   }
 
   if (!members || members.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         No members yet. Invite someone to join.
       </p>
     );
@@ -94,13 +91,13 @@ export function MembersList({ orgId }: { orgId: string }) {
                   {member.user.name}
 
                   {isCurrentUser && (
-                    <span className="ml-1.5 text-xs font-normal text-muted-foreground">
+                    <span className="text-muted-foreground ml-1.5 text-xs font-normal">
                       (you)
                     </span>
                   )}
                 </p>
 
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {member.user.email}
                 </p>
               </div>
@@ -108,15 +105,13 @@ export function MembersList({ orgId }: { orgId: string }) {
 
             <div className="flex items-center gap-2">
               {member.role === "OWNER" ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium uppercase text-muted-foreground">
+                <span className="bg-muted text-muted-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium uppercase">
                   <Crown className="size-3" />
-
                   Owner
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium uppercase text-muted-foreground">
+                <span className="bg-muted text-muted-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium uppercase">
                   <User className="size-3" />
-
                   Member
                 </span>
               )}

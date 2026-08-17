@@ -10,12 +10,7 @@ import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { useOrganizationStore } from "@/store/organization.store";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function AcceptInvitationContent() {
   const router = useRouter();
@@ -29,12 +24,8 @@ function AcceptInvitationContent() {
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
   );
-  const [organizationName, setOrganizationName] = useState<
-    string | null
-  >(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(
-    null
-  );
+  const [organizationName, setOrganizationName] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token) {
@@ -68,9 +59,7 @@ function AcceptInvitationContent() {
         }
 
         const message =
-          typeof error === "object" &&
-          error !== null &&
-          "response" in error
+          typeof error === "object" && error !== null && "response" in error
             ? (
                 error as {
                   response?: {
@@ -82,9 +71,7 @@ function AcceptInvitationContent() {
               ).response?.data?.message
             : undefined;
 
-        setErrorMessage(
-          message ?? "Unable to accept this invitation."
-        );
+        setErrorMessage(message ?? "Unable to accept this invitation.");
         setStatus("error");
       }
     };
@@ -98,57 +85,47 @@ function AcceptInvitationContent() {
 
   return (
     <ProtectedRoute>
-      <main className="flex min-h-screen items-center justify-center bg-background px-6">
+      <main className="bg-background flex min-h-screen items-center justify-center px-6">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-center text-xl">
-              Invitation
-            </CardTitle>
+            <CardTitle className="text-center text-xl">Invitation</CardTitle>
           </CardHeader>
 
           <CardContent className="text-center">
             {status === "loading" ? (
               <div className="flex flex-col items-center gap-3 py-4">
-                <Loader2 className="size-6 animate-spin text-muted-foreground" />
+                <Loader2 className="text-muted-foreground size-6 animate-spin" />
 
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Accepting your invitation...
                 </p>
               </div>
             ) : status === "success" ? (
               <div className="flex flex-col items-center gap-4 py-4">
-                <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
-                  <Building2 className="size-6 text-primary" />
+                <div className="bg-primary/10 flex size-12 items-center justify-center rounded-full">
+                  <Building2 className="text-primary size-6" />
                 </div>
 
                 <div>
                   <p className="font-medium">
                     You are now a member of{" "}
-                    <span className="text-primary">
-                      {organizationName}
-                    </span>
+                    <span className="text-primary">{organizationName}</span>
                   </p>
 
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mt-1 text-sm">
                     You can start collaborating right away.
                   </p>
                 </div>
 
-                <Button
-                  onClick={() =>
-                    router.push("/dashboard/organizations")
-                  }
-                >
+                <Button onClick={() => router.push("/dashboard/organizations")}>
                   Go to my organizations
                 </Button>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-4 py-4">
-                <p className="font-medium text-destructive">
-                  {errorMessage}
-                </p>
+                <p className="text-destructive font-medium">{errorMessage}</p>
 
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Please contact the person who invited you.
                 </p>
 
@@ -171,8 +148,8 @@ export default function AcceptInvitationPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-background">
-          <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        <div className="bg-background flex min-h-screen items-center justify-center">
+          <Loader2 className="text-muted-foreground size-6 animate-spin" />
         </div>
       }
     >

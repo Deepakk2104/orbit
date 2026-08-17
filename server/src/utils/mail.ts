@@ -43,10 +43,7 @@ export const sendInvitationEmail = async (
   });
 };
 
-export const sendPasswordResetEmail = async (
-  email: string,
-  token: string
-) => {
+export const sendPasswordResetEmail = async (email: string, token: string) => {
   if (!isSmtpConfigured()) {
     console.warn(
       `[mail] SMTP not configured, skipping password reset email to ${email}`
@@ -54,8 +51,7 @@ export const sendPasswordResetEmail = async (
     return;
   }
 
-  const resetUrl =
-    `${process.env.CLIENT_URL}/reset-password?token=${token}`;
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${token}`;
 
   await transporter.sendMail({
     from: process.env.SMTP_USER,

@@ -51,11 +51,10 @@ export function AddTaskForm({
       <Button
         size="sm"
         variant="ghost"
-        className="w-full justify-start text-muted-foreground"
+        className="text-muted-foreground w-full justify-start"
         onClick={() => setOpen(true)}
       >
         <Plus className="size-4" />
-
         Add task
       </Button>
     );
@@ -89,7 +88,6 @@ export function AddTaskForm({
           {mutation.isPending && (
             <Loader2 className="mr-1 size-3.5 animate-spin" />
           )}
-
           Add
         </Button>
 

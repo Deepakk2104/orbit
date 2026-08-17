@@ -124,10 +124,7 @@ export const refresh = async (req: Request, res: Response) => {
     });
   }
 };
-export const me = async (
-  req: AuthRequest,
-  res: Response
-) => {
+export const me = async (req: AuthRequest, res: Response) => {
   if (!req.userId) {
     return res.status(401).json({
       success: false,
@@ -166,10 +163,7 @@ export const logout = (_req: Request, res: Response) => {
   });
 };
 
-export const forgotPassword = async (
-  req: Request,
-  res: Response
-) => {
+export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const data = forgotPasswordSchema.parse(req.body);
 
@@ -188,10 +182,7 @@ export const forgotPassword = async (
   }
 };
 
-export const resetPassword = async (
-  req: Request,
-  res: Response
-) => {
+export const resetPassword = async (req: Request, res: Response) => {
   try {
     const data = resetPasswordSchema.parse(req.body);
 
@@ -205,9 +196,7 @@ export const resetPassword = async (
     return res.status(400).json({
       success: false,
       message:
-        error instanceof Error
-          ? error.message
-          : "Unable to reset password.",
+        error instanceof Error ? error.message : "Unable to reset password.",
     });
   }
 };

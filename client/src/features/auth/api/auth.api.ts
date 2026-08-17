@@ -19,14 +19,11 @@ export interface RegisterResponse {
 export const registerUser = async (
   data: RegisterFormData
 ): Promise<RegisterResponse> => {
-  const response = await apiClient.post<RegisterResponse>(
-    "/auth/register",
-    {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    }
-  );
+  const response = await apiClient.post<RegisterResponse>("/auth/register", {
+    name: data.name,
+    email: data.email,
+    password: data.password,
+  });
 
   return response.data;
 };
@@ -43,10 +40,7 @@ export interface LoginResponse {
 export const loginUser = async (
   data: LoginFormData
 ): Promise<LoginResponse> => {
-  const response = await apiClient.post<LoginResponse>(
-    "/auth/login",
-    data
-  );
+  const response = await apiClient.post<LoginResponse>("/auth/login", data);
 
   return response.data;
 };

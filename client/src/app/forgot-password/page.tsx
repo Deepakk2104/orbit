@@ -25,26 +25,22 @@ export default function ForgotPasswordPage() {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = async (
-    data: ForgotPasswordFormData
-  ) => {
+  const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
       const response = await forgotPassword(data.email);
 
       toast.success(response.message);
     } catch {
-      toast.error(
-        "Unable to process your request. Please try again."
-      );
+      toast.error("Unable to process your request. Please try again.");
     }
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-6">
+    <main className="bg-background flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-md">
         <Link
           href="/login"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground mb-8 inline-flex items-center gap-2 text-sm"
         >
           <ArrowLeft className="size-4" />
           Back to login
@@ -55,16 +51,12 @@ export default function ForgotPasswordPage() {
             Forgot your password?
           </h1>
 
-          <p className="text-sm leading-6 text-muted-foreground">
-            Enter your email and we will send you a secure password
-            reset link.
+          <p className="text-muted-foreground text-sm leading-6">
+            Enter your email and we will send you a secure password reset link.
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
 
@@ -78,24 +70,14 @@ export default function ForgotPasswordPage() {
             />
 
             {errors.email && (
-              <p className="text-sm text-destructive">
-                {errors.email.message}
-              </p>
+              <p className="text-destructive text-sm">{errors.email.message}</p>
             )}
           </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting}
-          >
-            {isSubmitting && (
-              <Loader2 className="mr-2 size-4 animate-spin" />
-            )}
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
 
-            {isSubmitting
-              ? "Sending link..."
-              : "Send reset link"}
+            {isSubmitting ? "Sending link..." : "Send reset link"}
           </Button>
         </form>
       </div>

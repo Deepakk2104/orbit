@@ -8,6 +8,4 @@ export const resetPasswordSchema = z.object({
     .max(100),
 });
 
-export type ResetPasswordInput = z.infer<
-  typeof resetPasswordSchema
->;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

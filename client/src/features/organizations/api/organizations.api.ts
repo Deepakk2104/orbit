@@ -34,9 +34,9 @@ export const listOrganizations = async (): Promise<Organization[]> => {
   return response.data.data;
 };
 
-export const createOrganization = async (
-  data: { name: string }
-): Promise<Organization> => {
+export const createOrganization = async (data: {
+  name: string;
+}): Promise<Organization> => {
   const response = await apiClient.post<{
     success: boolean;
     message: string;

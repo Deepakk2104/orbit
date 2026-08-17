@@ -8,12 +8,7 @@ import { createBoard, getBoard } from "../api/boards.api";
 import { KanbanBoard } from "./kanban-board";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function BoardSection({
   orgId,
@@ -24,7 +19,11 @@ export function BoardSection({
 }) {
   const queryClient = useQueryClient();
 
-  const { data: board, isLoading, isError } = useQuery({
+  const {
+    data: board,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["board", orgId, projectId],
     queryFn: () => getBoard(orgId, projectId),
     retry: false,
@@ -47,7 +46,7 @@ export function BoardSection({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-5 animate-spin" />
       </div>
     );
   }
@@ -61,13 +60,12 @@ export function BoardSection({
 
         <CardContent>
           <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed px-6 py-12 text-center">
-            <KanbanSquare className="size-8 text-muted-foreground" />
+            <KanbanSquare className="text-muted-foreground size-8" />
 
             <div>
               <p className="font-medium">No board yet</p>
-              <p className="text-sm text-muted-foreground">
-                Create a board to start organizing tasks with default
-                columns.
+              <p className="text-muted-foreground text-sm">
+                Create a board to start organizing tasks with default columns.
               </p>
             </div>
 
@@ -78,7 +76,6 @@ export function BoardSection({
               {createMutation.isPending && (
                 <Loader2 className="mr-2 size-4 animate-spin" />
               )}
-
               Create board
             </Button>
           </div>

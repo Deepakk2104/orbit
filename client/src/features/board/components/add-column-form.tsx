@@ -43,11 +43,10 @@ export function AddColumnForm({
     return (
       <Button
         variant="ghost"
-        className="w-72 shrink-0 items-start justify-start rounded-xl border border-dashed text-muted-foreground"
+        className="text-muted-foreground w-72 shrink-0 items-start justify-start rounded-xl border border-dashed"
         onClick={() => setOpen(true)}
       >
         <Plus className="size-4" />
-
         Add column
       </Button>
     );
@@ -62,7 +61,7 @@ export function AddColumnForm({
           mutation.mutate();
         }
       }}
-      className="w-72 shrink-0 space-y-2 rounded-xl border bg-muted/30 p-3"
+      className="bg-muted/30 w-72 shrink-0 space-y-2 rounded-xl border p-3"
     >
       <Input
         autoFocus
@@ -81,7 +80,6 @@ export function AddColumnForm({
           {mutation.isPending && (
             <Loader2 className="mr-1 size-3.5 animate-spin" />
           )}
-
           Add column
         </Button>
 

@@ -17,10 +17,7 @@ export const createColumn = async (
     success: boolean;
     message: string;
     data: Column;
-  }>(
-    `/organizations/${orgId}/projects/${projectId}/board/columns`,
-    data
-  );
+  }>(`/organizations/${orgId}/projects/${projectId}/board/columns`, data);
 
   return response.data.data;
 };

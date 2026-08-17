@@ -4,22 +4,19 @@ import { LoginForm } from "@/features/auth/components/login-form";
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="bg-background min-h-screen">
       <div className="grid min-h-screen lg:grid-cols-2">
         {/* Brand panel */}
-        <section className="relative hidden overflow-hidden bg-muted/40 lg:flex">
+        <section className="bg-muted/40 relative hidden overflow-hidden lg:flex">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.15),transparent_45%)]" />
 
           <div className="relative flex w-full flex-col justify-between p-10 xl:p-14">
-            <Link
-              href="/"
-              className="text-xl font-semibold tracking-tight"
-            >
+            <Link href="/" className="text-xl font-semibold tracking-tight">
               Orbit
             </Link>
 
             <div className="max-w-lg">
-              <p className="mb-4 text-sm font-medium text-primary">
+              <p className="text-primary mb-4 text-sm font-medium">
                 WELCOME BACK
               </p>
 
@@ -29,13 +26,13 @@ export default function LoginPage() {
                 work awaits.
               </h1>
 
-              <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                Pick up where you left off and keep your projects
-                moving forward with Orbit.
+              <p className="text-muted-foreground mt-6 max-w-md text-base leading-7">
+                Pick up where you left off and keep your projects moving forward
+                with Orbit.
               </p>
             </div>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               © {new Date().getFullYear()} Orbit
             </p>
           </div>
@@ -45,10 +42,7 @@ export default function LoginPage() {
         <section className="flex items-center justify-center px-6 py-12 sm:px-8 lg:px-12">
           <div className="w-full max-w-md">
             <div className="mb-8 lg:hidden">
-              <Link
-                href="/"
-                className="text-xl font-semibold tracking-tight"
-              >
+              <Link href="/" className="text-xl font-semibold tracking-tight">
                 Orbit
               </Link>
             </div>
@@ -58,7 +52,7 @@ export default function LoginPage() {
                 Welcome back
               </h2>
 
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Sign in to continue to your Orbit workspace.
               </p>
             </div>

@@ -32,8 +32,7 @@ export function InviteMemberForm({ orgId }: { orgId: string }) {
   });
 
   const mutation = useMutation({
-    mutationFn: (data: InviteMemberFormData) =>
-      inviteMember(orgId, data),
+    mutationFn: (data: InviteMemberFormData) => inviteMember(orgId, data),
     onSuccess: (data) => {
       toast.success("Invitation sent successfully.");
 
@@ -49,9 +48,7 @@ export function InviteMemberForm({ orgId }: { orgId: string }) {
     },
     onError: (error) => {
       const message =
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error
+        typeof error === "object" && error !== null && "response" in error
           ? (
               error as {
                 response?: {
@@ -84,10 +81,7 @@ export function InviteMemberForm({ orgId }: { orgId: string }) {
             disabled={mutation.isPending}
           />
 
-          <Button
-            type="submit"
-            disabled={mutation.isPending}
-          >
+          <Button type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? (
               <Loader2 className="mr-2 size-4 animate-spin" />
             ) : (
@@ -99,9 +93,7 @@ export function InviteMemberForm({ orgId }: { orgId: string }) {
         </div>
 
         {errors.email && (
-          <p className="text-sm text-destructive">
-            {errors.email.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.email.message}</p>
         )}
       </div>
     </form>

@@ -24,12 +24,7 @@ import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { useOrganizationStore } from "@/store/organization.store";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -115,8 +110,8 @@ export default function ProjectDetailPage() {
   if (isLoading || !project) {
     return (
       <ProtectedRoute>
-        <main className="flex min-h-screen items-center justify-center bg-background">
-          <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        <main className="bg-background flex min-h-screen items-center justify-center">
+          <Loader2 className="text-muted-foreground size-6 animate-spin" />
         </main>
       </ProtectedRoute>
     );
@@ -124,20 +119,20 @@ export default function ProjectDetailPage() {
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-background">
+      <main className="bg-background min-h-screen">
         <div className="mx-auto min-h-screen max-w-4xl px-6 py-8 sm:px-8 lg:px-10">
           <header className="flex flex-wrap items-center justify-between gap-4 border-b pb-6">
             <div className="flex items-center gap-3">
               <Link
                 href={`/dashboard/organizations/${orgId}/projects`}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Back to projects"
               >
                 <ArrowLeft className="size-5" />
               </Link>
 
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-muted-foreground text-sm font-medium">
                   {currentOrganization?.name ?? "Project"}
                 </p>
 
@@ -150,7 +145,7 @@ export default function ProjectDetailPage() {
 
           <div className="mt-8 space-y-8">
             <section>
-              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              <h2 className="text-muted-foreground mb-4 text-sm font-semibold uppercase tracking-wide">
                 Kanban board
               </h2>
 
@@ -159,9 +154,7 @@ export default function ProjectDetailPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                <CardTitle className="text-base">
-                  Project
-                </CardTitle>
+                <CardTitle className="text-base">Project</CardTitle>
 
                 {!editing && (
                   <Button
@@ -170,7 +163,6 @@ export default function ProjectDetailPage() {
                     onClick={() => setEditing(true)}
                   >
                     <Pencil className="mr-2 size-3.5" />
-
                     Edit
                   </Button>
                 )}
@@ -185,9 +177,7 @@ export default function ProjectDetailPage() {
                     className="space-y-4"
                   >
                     <div className="space-y-2">
-                      <Label htmlFor="name">
-                        Project name
-                      </Label>
+                      <Label htmlFor="name">Project name</Label>
 
                       <Input
                         id="name"
@@ -196,41 +186,35 @@ export default function ProjectDetailPage() {
                       />
 
                       {errors.name && (
-                        <p className="text-sm text-destructive">
+                        <p className="text-destructive text-sm">
                           {errors.name.message}
                         </p>
                       )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="description">
-                        Description
-                      </Label>
+                      <Label htmlFor="description">Description</Label>
 
                       <textarea
                         id="description"
                         rows={4}
-                        className="w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-2 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 dark:bg-input/30 md:text-sm"
+                        className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:bg-input/50 dark:bg-input/30 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-2 text-base outline-none transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         {...register("description")}
                         disabled={updateMutation.isPending}
                       />
 
                       {errors.description && (
-                        <p className="text-sm text-destructive">
+                        <p className="text-destructive text-sm">
                           {errors.description.message}
                         </p>
                       )}
                     </div>
 
                     <div className="flex gap-2">
-                      <Button
-                        type="submit"
-                        disabled={updateMutation.isPending}
-                      >
+                      <Button type="submit" disabled={updateMutation.isPending}>
                         {updateMutation.isPending && (
                           <Loader2 className="mr-2 size-4 animate-spin" />
                         )}
-
                         Save
                       </Button>
 
@@ -246,17 +230,13 @@ export default function ProjectDetailPage() {
                 ) : (
                   <dl className="space-y-3 text-sm">
                     <div className="flex justify-between gap-8">
-                      <dt className="shrink-0 text-muted-foreground">
-                        Name
-                      </dt>
+                      <dt className="text-muted-foreground shrink-0">Name</dt>
 
-                      <dd className="font-medium">
-                        {project.name}
-                      </dd>
+                      <dd className="font-medium">{project.name}</dd>
                     </div>
 
                     <div className="flex justify-between gap-8">
-                      <dt className="shrink-0 text-muted-foreground">
+                      <dt className="text-muted-foreground shrink-0">
                         Description
                       </dt>
 
@@ -266,7 +246,7 @@ export default function ProjectDetailPage() {
                     </div>
 
                     <div className="flex justify-between gap-8">
-                      <dt className="shrink-0 text-muted-foreground">
+                      <dt className="text-muted-foreground shrink-0">
                         Created
                       </dt>
 
@@ -282,15 +262,15 @@ export default function ProjectDetailPage() {
             {isOwner && (
               <Card className="border-destructive/40">
                 <CardHeader>
-                  <CardTitle className="text-base text-destructive">
+                  <CardTitle className="text-destructive text-base">
                     Danger zone
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    Deleting this project removes its board and all
-                    tasks. This action cannot be undone.
+                  <p className="text-muted-foreground mb-4 text-sm">
+                    Deleting this project removes its board and all tasks. This
+                    action cannot be undone.
                   </p>
 
                   <Button
@@ -303,7 +283,6 @@ export default function ProjectDetailPage() {
                     ) : (
                       <Trash2 className="mr-2 size-4" />
                     )}
-
                     Delete project
                   </Button>
                 </CardContent>

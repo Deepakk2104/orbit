@@ -1,10 +1,7 @@
 import crypto from "crypto";
 import { prisma } from "../../lib/prisma.js";
 import { hashPassword, comparePassword } from "../../utils/password.js";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../../utils/jwt.js";
+import { generateAccessToken, generateRefreshToken } from "../../utils/jwt.js";
 import { sendPasswordResetEmail } from "../../utils/mail.js";
 import type { RegisterInput } from "./validators/register.validator.js";
 import type { LoginInput } from "./validators/login.validator.js";
@@ -43,7 +40,6 @@ export const registerUser = async (data: RegisterInput) => {
 };
 
 export const loginUser = async (data: LoginInput) => {
-
   const user = await prisma.user.findUnique({
     where: {
       email: data.email,
@@ -54,10 +50,7 @@ export const loginUser = async (data: LoginInput) => {
     throw new Error("Invalid email or password");
   }
 
-  const isPasswordCorrect = await comparePassword(
-    data.password,
-    user.password
-  );
+  const isPasswordCorrect = await comparePassword(data.password, user.password);
 
   if (!isPasswordCorrect) {
     throw new Error("Invalid email or password");
@@ -131,10 +124,7 @@ export const forgotPassword = async (data: ForgotPasswordInput) => {
   await sendPasswordResetEmail(user.email, token);
 };
 
-
-export const resetPassword = async (
-  data: ResetPasswordInput
-) => {
+export const resetPassword = async (data: ResetPasswordInput) => {
   const user = await prisma.user.findFirst({
     where: {
       resetPasswordToken: data.token,

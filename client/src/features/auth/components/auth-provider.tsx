@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { refreshSession } from "../api/auth.api";
 
-export function AuthProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -23,9 +19,7 @@ export function AuthProvider({
   if (!isHydrated) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-sm text-muted-foreground">
-          Loading Orbit...
-        </div>
+        <div className="text-muted-foreground text-sm">Loading Orbit...</div>
       </div>
     );
   }

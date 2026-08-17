@@ -103,7 +103,7 @@ export const createBoard = async (
     throw new Error("Project not found or access denied");
   }
 
-  const board = await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx) => {
     const created = await tx.board.create({
       data: {
         projectId,

@@ -1,9 +1,6 @@
 import { Router } from "express";
 import { authenticate } from "../../middlewares/auth.middleware.js";
-import {
-  authorizeMember,
-  requireOwner,
-} from "../../middlewares/authorize.js";
+import { authorizeMember, requireOwner } from "../../middlewares/authorize.js";
 import {
   create,
   getById,

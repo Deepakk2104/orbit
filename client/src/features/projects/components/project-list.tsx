@@ -20,7 +20,7 @@ export function ProjectList({ orgId }: { orgId: string }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-10">
-        <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-5 animate-spin" />
       </div>
     );
   }
@@ -28,11 +28,11 @@ export function ProjectList({ orgId }: { orgId: string }) {
   if (!projects || projects.length === 0) {
     return (
       <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed px-6 py-12 text-center">
-        <Folder className="size-8 text-muted-foreground" />
+        <Folder className="text-muted-foreground size-8" />
 
         <div>
           <p className="font-medium">No projects yet</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Create your first project to get started.
           </p>
         </div>
@@ -45,13 +45,11 @@ export function ProjectList({ orgId }: { orgId: string }) {
       {projects.map((project) => (
         <Card key={project.id}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-base">
-              {project.name}
-            </CardTitle>
+            <CardTitle className="text-base">{project.name}</CardTitle>
           </CardHeader>
 
           <CardContent className="flex flex-row items-center justify-between">
-            <p className="line-clamp-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground line-clamp-1 text-sm">
               {project.description || "No description"}
             </p>
 
@@ -65,7 +63,6 @@ export function ProjectList({ orgId }: { orgId: string }) {
               }
             >
               Open
-
               <ChevronRight className="ml-1 size-3.5" />
             </Button>
           </CardContent>

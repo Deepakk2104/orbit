@@ -11,7 +11,5 @@ export const toDateInputValue = (iso: string | null | undefined): string => {
 
   const offset = date.getTimezoneOffset();
 
-  return new Date(date.getTime() - offset * 60000)
-    .toISOString()
-    .slice(0, 10);
+  return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
 };

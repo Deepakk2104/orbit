@@ -280,10 +280,7 @@ export const moveTask = async (
   const currentPosition = task.position;
   const newPosition = data.position;
 
-  if (
-    currentColumnId === targetColumn.id &&
-    currentPosition === newPosition
-  ) {
+  if (currentColumnId === targetColumn.id && currentPosition === newPosition) {
     return;
   }
 

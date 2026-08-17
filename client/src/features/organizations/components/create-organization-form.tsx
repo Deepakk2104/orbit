@@ -42,9 +42,7 @@ export function CreateOrganizationForm({
       onCreated?.();
     } catch (error) {
       const message =
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error
+        typeof error === "object" && error !== null && "response" in error
           ? (
               error as {
                 response?: {
@@ -73,16 +71,12 @@ export function CreateOrganizationForm({
         />
 
         {errors.name && (
-          <p className="text-sm text-destructive">
-            {errors.name.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.name.message}</p>
         )}
       </div>
 
       <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting && (
-          <Loader2 className="mr-2 size-4 animate-spin" />
-        )}
+        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
 
         {isSubmitting ? "Creating..." : "Create organization"}
       </Button>

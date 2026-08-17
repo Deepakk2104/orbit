@@ -71,8 +71,7 @@ export const inviteMember = async (
 
   await sendInvitationEmail(data.email, organization.name, token);
 
-  const devToken =
-    process.env.NODE_ENV !== "production" ? { token } : {};
+  const devToken = process.env.NODE_ENV !== "production" ? { token } : {};
 
   return {
     ...invitation,

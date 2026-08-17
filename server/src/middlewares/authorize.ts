@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Response } from "express";
 import type { OrganizationRole } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
 import type { AuthRequest } from "./auth.middleware.js";

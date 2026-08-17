@@ -9,10 +9,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { loginUser } from "../api/auth.api";
-import {
-  loginSchema,
-  type LoginFormData,
-} from "../schemas/login.schema";
+import { loginSchema, type LoginFormData } from "../schemas/login.schema";
 
 import { useAuthStore } from "@/store/auth.store";
 
@@ -43,19 +40,14 @@ export function LoginForm() {
     try {
       const response = await loginUser(data);
 
-      setAuth(
-        response.data.user,
-        response.data.accessToken
-      );
+      setAuth(response.data.user, response.data.accessToken);
 
       toast.success(response.message);
 
       router.push("/dashboard");
     } catch (error) {
       const message =
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error
+        typeof error === "object" && error !== null && "response" in error
           ? (
               error as {
                 response?: {
@@ -67,9 +59,7 @@ export function LoginForm() {
             ).response?.data?.message
           : undefined;
 
-      toast.error(
-        message ?? "Invalid email or password. Please try again."
-      );
+      toast.error(message ?? "Invalid email or password. Please try again.");
     }
   };
 
@@ -88,9 +78,7 @@ export function LoginForm() {
         />
 
         {errors.email && (
-          <p className="text-sm text-destructive">
-            {errors.email.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.email.message}</p>
         )}
       </div>
 
@@ -100,7 +88,7 @@ export function LoginForm() {
 
           <Link
             href="/forgot-password"
-            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="text-muted-foreground hover:text-foreground text-sm underline-offset-4 hover:underline"
           >
             Forgot password?
           </Link>
@@ -120,10 +108,8 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword((value) => !value)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-            aria-label={
-              showPassword ? "Hide password" : "Show password"
-            }
+            className="text-muted-foreground hover:text-foreground absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+            aria-label={showPassword ? "Hide password" : "Show password"}
             disabled={isSubmitting}
           >
             {showPassword ? (
@@ -135,29 +121,21 @@ export function LoginForm() {
         </div>
 
         {errors.password && (
-          <p className="text-sm text-destructive">
-            {errors.password.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.password.message}</p>
         )}
       </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={isSubmitting}
-      >
-        {isSubmitting && (
-          <Loader2 className="mr-2 size-4 animate-spin" />
-        )}
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
 
         {isSubmitting ? "Signing in..." : "Sign in"}
       </Button>
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-center text-sm">
         Dont have an account?{" "}
         <Link
           href="/register"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
+          className="text-foreground font-medium underline-offset-4 hover:underline"
         >
           Create one
         </Link>

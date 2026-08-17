@@ -68,9 +68,7 @@ export function RegisterForm() {
         />
 
         {errors.name && (
-          <p className="text-sm text-destructive">
-            {errors.name.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.name.message}</p>
         )}
       </div>
 
@@ -87,9 +85,7 @@ export function RegisterForm() {
         />
 
         {errors.email && (
-          <p className="text-sm text-destructive">
-            {errors.email.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.email.message}</p>
         )}
       </div>
 
@@ -110,10 +106,8 @@ export function RegisterForm() {
           <button
             type="button"
             onClick={() => setShowPassword((value) => !value)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            aria-label={
-              showPassword ? "Hide password" : "Show password"
-            }
+            className="text-muted-foreground hover:text-foreground absolute right-3 top-1/2 -translate-y-1/2"
+            aria-label={showPassword ? "Hide password" : "Show password"}
             disabled={isSubmitting}
           >
             {showPassword ? (
@@ -125,9 +119,7 @@ export function RegisterForm() {
         </div>
 
         {errors.password && (
-          <p className="text-sm text-destructive">
-            {errors.password.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.password.message}</p>
         )}
       </div>
 
@@ -147,15 +139,9 @@ export function RegisterForm() {
 
           <button
             type="button"
-            onClick={() =>
-              setShowConfirmPassword((value) => !value)
-            }
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            aria-label={
-              showConfirmPassword
-                ? "Hide password"
-                : "Show password"
-            }
+            onClick={() => setShowConfirmPassword((value) => !value)}
+            className="text-muted-foreground hover:text-foreground absolute right-3 top-1/2 -translate-y-1/2"
+            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
             disabled={isSubmitting}
           >
             {showConfirmPassword ? (
@@ -167,29 +153,23 @@ export function RegisterForm() {
         </div>
 
         {errors.confirmPassword && (
-          <p className="text-sm text-destructive">
+          <p className="text-destructive text-sm">
             {errors.confirmPassword.message}
           </p>
         )}
       </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={isSubmitting}
-      >
-        {isSubmitting && (
-          <Loader2 className="mr-2 size-4 animate-spin" />
-        )}
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
 
         {isSubmitting ? "Creating account..." : "Create account"}
       </Button>
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-center text-sm">
         Already have an account?{" "}
         <Link
           href="/login"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
+          className="text-foreground font-medium underline-offset-4 hover:underline"
         >
           Sign in
         </Link>
@@ -199,11 +179,7 @@ export function RegisterForm() {
 }
 
 function axiosErrorMessage(error: unknown): string | null {
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "response" in error
-  ) {
+  if (typeof error === "object" && error !== null && "response" in error) {
     const response = (
       error as {
         response?: {

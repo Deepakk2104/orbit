@@ -1,8 +1,9 @@
 # Orbit – TASKS.md
 
-> **Project Status:** 🟡 Planning — Phase 2 (Auth), Phase 3 (Organizations), Phase 4 (Projects) & Phase 5 (Kanban Board) Complete
+> **Project Status:** 🟢 MVP Feature Complete — Phases 1–7 done. Remaining: Phase 8 (Deployment, Docs, Testing).
 
 ---
+
 # Phase 1 — Project Setup
 
 ## Repository
@@ -84,18 +85,18 @@
 
 ### Frontend
 
-- [ ] Configure ESLint
-- [ ] Configure Prettier
+- [x] Configure ESLint
+- [x] Configure Prettier
 
 ### Backend
 
-- [ ] Configure ESLint
-- [ ] Configure Prettier
+- [x] Configure ESLint
+- [x] Configure Prettier
 
 ### Git Hooks
 
-- [ ] Configure Husky
-- [ ] Configure lint-staged
+- [x] Configure Husky
+- [x] Configure lint-staged
 
 ---
 
@@ -127,21 +128,21 @@
 
 ## Backend
 
-* [x] User Registration
-* [x] User Login
-* [x] JWT Authentication
-* [x] Refresh Tokens
-* [x] Password Hashing
-* [x] Logout
+- [x] User Registration
+- [x] User Login
+- [x] JWT Authentication
+- [x] Refresh Tokens
+- [x] Password Hashing
+- [x] Logout
 
 ## Frontend
 
-* [x] Login Page
-* [x] Register Page
-* [x] Forgot Password Page
-* [x] Reset Password Page
-* [x] Protected Routes
-* [x] Authentication State
+- [x] Login Page
+- [x] Register Page
+- [x] Forgot Password Page
+- [x] Reset Password Page
+- [x] Protected Routes
+- [x] Authentication State
 
 ---
 
@@ -149,22 +150,22 @@
 
 ## Organization
 
-* [x] Create Organization
-* [x] Edit Organization
-* [x] Delete Organization
+- [x] Create Organization
+- [x] Edit Organization
+- [x] Delete Organization
 
 ## Members
 
-* [x] Invite Members
-* [x] Accept Invitation
-* [x] Remove Members
-* [x] Switch Organization
+- [x] Invite Members
+- [x] Accept Invitation
+- [x] Remove Members
+- [x] Switch Organization
 
 ## Roles
 
-* [x] Owner Role
-* [x] Member Role
-* [x] Backend Authorization
+- [x] Owner Role
+- [x] Member Role
+- [x] Backend Authorization
 
 ---
 
@@ -172,11 +173,11 @@
 
 ## Project Management
 
-* [x] Create Project
-* [x] Edit Project
-* [x] Delete Project
-* [x] Project Details
-* [ ] Assign Members (deferred — project members currently mirror organization members)
+- [x] Create Project
+- [x] Edit Project
+- [x] Delete Project
+- [x] Project Details
+- [ ] Assign Members (deferred — project members currently mirror organization members)
 
 ---
 
@@ -184,17 +185,17 @@
 
 ## Board
 
-* [x] Create Board
-* [x] Default Columns
-* [x] Custom Columns
+- [x] Create Board
+- [x] Default Columns
+- [x] Custom Columns
 
 ## Tasks
 
-* [x] Create Task
-* [x] Edit Task
-* [x] Delete Task
-* [x] Drag & Drop
-* [x] Persist Task Position
+- [x] Create Task
+- [x] Edit Task
+- [x] Delete Task
+- [x] Drag & Drop
+- [x] Persist Task Position
 
 ---
 
@@ -202,16 +203,16 @@
 
 ## Task Information
 
-* [ ] Title
-* [ ] Description
-* [ ] Assignee
-* [ ] Due Date
-* [ ] Priority
+- [x] Title
+- [x] Description
+- [x] Assignee
+- [x] Due Date
+- [x] Priority
 
 ## Comments
 
-* [ ] Create Comment
-* [ ] Delete Comment
+- [x] Create Comment
+- [x] Delete Comment
 
 ---
 
@@ -219,9 +220,9 @@
 
 ## Profile
 
-* [ ] Update Name
-* [ ] Change Password
-* [ ] Upload Avatar (Optional)
+- [x] Update Name
+- [x] Change Password
+- [x] Upload Avatar (Optional — set via URL)
 
 ---
 
@@ -229,49 +230,58 @@
 
 ## Deployment
 
-* [ ] Deploy Frontend (Vercel)
-* [ ] Deploy Backend (Railway)
-* [ ] Configure PostgreSQL
-* [ ] Configure Environment Variables
-* [ ] Create Demo Account
+- [ ] Deploy Frontend (Vercel)
+- [ ] Deploy Backend (Railway)
+- [ ] Configure PostgreSQL
+- [ ] Configure Environment Variables
+- [ ] Create Demo Account
 
 ## Documentation
 
-* [ ] Complete README
-* [ ] API Documentation
-* [ ] Database Documentation
+- [ ] Complete README
+- [ ] API Documentation
+- [ ] Database Documentation
 
 ## Testing
 
-* [ ] Test Authentication
-* [ ] Test Organizations
-* [ ] Test Projects
-* [ ] Test Kanban
-* [ ] Test Task Management
-* [ ] Fix Bugs
+- [ ] Test Authentication
+- [ ] Test Organizations
+- [ ] Test Projects
+- [ ] Test Kanban
+- [ ] Test Task Management
+- [ ] Fix Bugs
 
 ---
 
 # MVP Completion Checklist
 
-* [ ] Authentication Complete
-* [ ] Multi-Tenant Organizations Complete
-* [ ] Project Management Complete
-* [ ] Kanban Board Complete
-* [ ] Task Management Complete
-* [ ] Role-Based Access Control Complete
-* [ ] User Profile Complete
-* [ ] Application Deployed
-* [ ] Documentation Complete
-* [ ] MVP Released 🎉
+- [x] Authentication Complete
+- [x] Multi-Tenant Organizations Complete
+- [x] Project Management Complete
+- [x] Kanban Board Complete
+- [x] Task Management Complete
+- [x] Role-Based Access Control Complete
+- [x] User Profile Complete
+- [ ] Application Deployed
+- [ ] Documentation Complete
+- [ ] MVP Released 🎉
 
 ---
 
 # Notes
 
-* Build one feature at a time.
-* Never skip unfinished tasks.
-* Every phase must end in a working state.
-* No features outside the MVP scope.
-* Keep commits small, descriptive, and focused.
-* Update this file after every development session.
+- Build one feature at a time.
+- Never skip unfinished tasks.
+- Every phase must end in a working state.
+- No features outside the MVP scope.
+- Keep commits small, descriptive, and focused.
+- Update this file after every development session.
+
+---
+
+# Changelog
+
+- Phase 1 cleanup: `.gitignore` was empty — filled it in and untracked `node_modules/`, `server/.env`, and compiled artifacts that had been committed.
+- Server build fixed: `tsconfig.json` now emits to `dist/` (was emitting `.js`/`.d.ts` into `src/`, breaking `npm start`).
+- Code quality: ESLint + Prettier configured for client (Next default config + Prettier) and server (typescript-eslint flat config); Husky pre-commit + lint-staged at root.
+- Server TypeScript downgraded `^7.0.2` → `^5.9.3` because `typescript-eslint` does not yet support TS 7.

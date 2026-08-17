@@ -38,30 +38,30 @@ No unnecessary features before this point.
 
 ## Frontend
 
-* Next.js
-* TypeScript
-* Tailwind CSS
-* shadcn/ui
-* TanStack Query
-* Zustand
-* React Hook Form
-* Zod
-* DnD Kit
+- Next.js
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- TanStack Query
+- Zustand
+- React Hook Form
+- Zod
+- DnD Kit
 
 ## Backend
 
-* Node.js
-* Express
-* TypeScript
-* PostgreSQL
-* Prisma ORM
-* JWT Authentication
-* Nodemailer
+- Node.js
+- Express
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- JWT Authentication
+- Nodemailer
 
 ## Deployment
 
-* Vercel
-* Railway (Backend + Database)
+- Vercel
+- Railway (Backend + Database)
 
 ---
 
@@ -69,54 +69,55 @@ No unnecessary features before this point.
 
 ## Authentication
 
-* Register
-* Login
-* JWT Authentication
-* Refresh Tokens
-* Logout
+- Register
+- Login
+- JWT Authentication
+- Refresh Tokens
+- Logout
 
 ---
 
 ## Organizations
 
-* Create Organization
-* Invite Members
-* Join Organization
-* Switch Organizations
+- Create Organization
+- Invite Members
+- Join Organization
+- Switch Organizations
 
 ---
 
 ## Projects
 
-* Create Project
-* Edit Project
-* Delete Project
-* Assign Members
+- Create Project
+- Edit Project
+- Delete Project
+- Assign Members
 
 ---
 
 ## Kanban Board
 
-* Default Columns
+- Default Columns
 
-  * To Do
-  * In Progress
-  * Done
-* Create Tasks
-* Edit Tasks
-* Delete Tasks
-* Drag & Drop
+  - To Do
+  - In Progress
+  - Done
+
+- Create Tasks
+- Edit Tasks
+- Delete Tasks
+- Drag & Drop
 
 ---
 
 ## Task Details
 
-* Title
-* Description
-* Assignee
-* Due Date
-* Priority
-* Comments
+- Title
+- Description
+- Assignee
+- Due Date
+- Priority
+- Comments
 
 ---
 
@@ -124,24 +125,24 @@ No unnecessary features before this point.
 
 ### Owner
 
-* Manage Organization
-* Invite Members
-* Remove Members
-* Delete Projects
+- Manage Organization
+- Invite Members
+- Remove Members
+- Delete Projects
 
 ### Member
 
-* View Projects
-* Manage Assigned Tasks
-* Comment
+- View Projects
+- Manage Assigned Tasks
+- Comment
 
 ---
 
 ## User Profile
 
-* Update Profile
-* Change Password
-* Upload Avatar (optional)
+- Update Profile
+- Change Password
+- Upload Avatar (optional)
 
 ---
 
@@ -239,41 +240,41 @@ Invitation
 
 ### Phase 1
 
-* Project Setup
-* Monorepo
-* Database
-* Prisma
+- Project Setup
+- Monorepo
+- Database
+- Prisma
 
 ### Phase 2
 
-* Authentication
-* Authorization
-* User Profile
+- Authentication
+- Authorization
+- User Profile
 
 ### Phase 3
 
-* Organizations
-* Invitations
-* Member Management
+- Organizations
+- Invitations
+- Member Management
 
 ### Phase 4
 
-* Projects
+- Projects
 
 ### Phase 5
 
-* Kanban Board
+- Kanban Board
 
 ### Phase 6
 
-* Tasks
-* Comments
+- Tasks
+- Comments
 
 ### Phase 7
 
-* Testing
-* Deployment
-* Documentation
+- Testing
+- Deployment
+- Documentation
 
 ---
 
@@ -293,13 +294,13 @@ Invitation
 
 Orbit MVP is complete when:
 
-* Authentication works.
-* Multi-tenancy works.
-* Projects work.
-* Kanban works.
-* Tasks work.
-* RBAC works.
-* The application is deployed.
-* The README and documentation are complete.
+- Authentication works.
+- Multi-tenancy works.
+- Projects work.
+- Kanban works.
+- Tasks work.
+- RBAC works.
+- The application is deployed.
+- The README and documentation are complete.
 
 **Only after every item above is complete is the MVP considered finished.**

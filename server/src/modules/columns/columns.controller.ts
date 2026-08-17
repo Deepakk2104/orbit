@@ -1,10 +1,6 @@
 import type { Response } from "express";
 import type { ProjectRequest } from "../../middlewares/authorize.js";
-import {
-  createColumn,
-  deleteColumn,
-  updateColumn,
-} from "./columns.service.js";
+import { createColumn, deleteColumn, updateColumn } from "./columns.service.js";
 import { createColumnSchema } from "./validators/create.validator.js";
 import { updateColumnSchema } from "./validators/update.validator.js";
 

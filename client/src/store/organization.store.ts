@@ -26,8 +26,7 @@ export const useOrganizationStore = create<OrganizationState>()(
       setCurrentOrganization: (organization) =>
         set({ currentOrganization: organization }),
 
-      clearOrganization: () =>
-        set({ currentOrganization: null }),
+      clearOrganization: () => set({ currentOrganization: null }),
     }),
     {
       name: "orbit-organization",

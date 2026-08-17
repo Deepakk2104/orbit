@@ -45,7 +45,7 @@ export function TaskCard({
       style={overlay ? undefined : style}
       {...(overlay ? {} : attributes)}
       className={cn(
-        "group rounded-lg border bg-card p-3 shadow-xs",
+        "bg-card shadow-xs group rounded-lg border p-3",
         isDragging && "opacity-40",
         overlay && "rotate-2 shadow-lg"
       )}
@@ -62,7 +62,7 @@ export function TaskCard({
         {!overlay && (
           <button
             type="button"
-            className="cursor-grab touch-none rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:bg-muted group-hover:opacity-100 active:cursor-grabbing"
+            className="text-muted-foreground hover:bg-muted cursor-grab touch-none rounded p-0.5 opacity-0 transition-opacity active:cursor-grabbing group-hover:opacity-100"
             aria-label="Drag task"
             {...attributes}
             {...listeners}
@@ -72,7 +72,7 @@ export function TaskCard({
         )}
       </div>
 
-      <div className="mt-2.5 flex items-center gap-2 text-xs text-muted-foreground">
+      <div className="text-muted-foreground mt-2.5 flex items-center gap-2 text-xs">
         <span
           className={cn(
             "rounded-full px-2 py-0.5 font-medium uppercase",

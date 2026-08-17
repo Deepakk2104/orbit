@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# build outputs
+.next/
+out/
+dist/
+build/
+
+# environment files
+.env
+.env.local
+.env.*.local
+
+# typescript
+*.tsbuildinfo
+
+# compiled artifacts emitted into src (legacy, cleaned by tsconfig outDir fix)
+server/src/generated/
+server/src/**/*.js
+server/src/**/*.js.map
+server/src/**/*.d.ts
+server/src/**/*.d.ts.map
+
+# logs
+*.log
+npm-debug.log*
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -23,9 +23,7 @@ export function OrganizationSwitcher() {
   });
 
   const handleChange = (orgId: string) => {
-    const organization = organizations?.find(
-      (item) => item.id === orgId
-    );
+    const organization = organizations?.find((item) => item.id === orgId);
 
     if (organization) {
       setCurrentOrganization(organization);
@@ -38,7 +36,7 @@ export function OrganizationSwitcher() {
     <select
       value={currentOrganization?.id ?? ""}
       onChange={(event) => handleChange(event.target.value)}
-      className="h-9 rounded-md border bg-background px-3 text-sm outline-none transition-colors focus:border-primary"
+      className="bg-background focus:border-primary h-9 rounded-md border px-3 text-sm outline-none transition-colors"
       aria-label="Switch organization"
     >
       {!currentOrganization && (

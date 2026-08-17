@@ -82,7 +82,7 @@ export function BoardColumnView({
     <div
       ref={setNodeRef}
       className={cn(
-        "flex w-72 shrink-0 flex-col rounded-xl border bg-muted/30",
+        "bg-muted/30 flex w-72 shrink-0 flex-col rounded-xl border",
         isOver && "border-primary"
       )}
     >
@@ -139,7 +139,7 @@ export function BoardColumnView({
               {column.name}
             </h3>
 
-            <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+            <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs">
               {column.tasks.length}
             </span>
 
@@ -174,18 +174,10 @@ export function BoardColumnView({
       >
         <div className="flex flex-col gap-2 p-3">
           {column.tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onOpen={onOpenTask}
-            />
+            <TaskCard key={task.id} task={task} onOpen={onOpenTask} />
           ))}
 
-          <AddTaskForm
-            orgId={orgId}
-            projectId={projectId}
-            column={column}
-          />
+          <AddTaskForm orgId={orgId} projectId={projectId} column={column} />
         </div>
       </SortableContext>
     </div>
