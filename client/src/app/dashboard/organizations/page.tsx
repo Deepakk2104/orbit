@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { OrganizationList } from "@/features/organizations/components/organization-list";
 import { CreateOrganizationForm } from "@/features/organizations/components/create-organization-form";
@@ -15,12 +17,24 @@ export default function OrganizationsPage() {
       <main className="bg-background min-h-screen">
         <div className="mx-auto min-h-screen max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
           <header className="flex items-center justify-between border-b pb-6">
-            <div>
-              <p className="text-muted-foreground text-sm font-medium">Orbit</p>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/dashboard"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Back to dashboard"
+              >
+                <ArrowLeft className="size-5" />
+              </Link>
 
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-                Organizations
-              </h1>
+              <div>
+                <p className="text-muted-foreground text-sm font-medium">
+                  Orbit
+                </p>
+
+                <h1 className="mt-1 text-2xl font-semibold tracking-tight">
+                  Organizations
+                </h1>
+              </div>
             </div>
 
             <div className="text-right">
