@@ -8,6 +8,60 @@ export interface OrgRequest extends AuthRequest {
   membershipRole?: OrganizationRole;
 }
 
+export interface ProjectRequest extends OrgRequest {
+  projectId?: string;
+}
+
+export const authorizeProject = async (
+  req: ProjectRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.orgId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    const projectIdParam = req.params.projectId;
+
+    if (typeof projectIdParam !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Project id is required",
+      });
+    }
+
+    const project = await prisma.project.findFirst({
+      where: {
+        id: projectIdParam,
+        organizationId: req.orgId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!project) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have access to this project",
+      });
+    }
+
+    req.projectId = projectIdParam;
+
+    next();
+  } catch {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 export const authorizeMember = async (
   req: OrgRequest,
   res: Response,

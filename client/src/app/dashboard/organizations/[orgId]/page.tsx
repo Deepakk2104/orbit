@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Loader2, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, FolderKanban, Loader2, Pencil, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -25,7 +25,9 @@ import { ProtectedRoute } from "@/features/auth/components/protected-route";
 
 import { useOrganizationStore } from "@/store/organization.store";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -167,6 +169,17 @@ export default function OrganizationDetailPage() {
             </div>
 
             <div className="flex items-center gap-3">
+              <Link
+                href={`/dashboard/organizations/${orgId}/projects`}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" })
+                )}
+              >
+                <FolderKanban className="mr-2 size-3.5" />
+
+                Projects
+              </Link>
+
               <OrganizationSwitcher />
 
               <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium uppercase text-muted-foreground">

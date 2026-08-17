@@ -1,6 +1,6 @@
 # Orbit – TASKS.md
 
-> **Project Status:** 🟡 Planning — Phase 2 (Auth) & Phase 3 (Organizations) Complete
+> **Project Status:** 🟡 Planning — Phase 2 (Auth), Phase 3 (Organizations), Phase 4 (Projects) & Phase 5 (Kanban Board) Complete
 
 ---
 # Phase 1 — Project Setup
@@ -172,11 +172,11 @@
 
 ## Project Management
 
-* [ ] Create Project
-* [ ] Edit Project
-* [ ] Delete Project
-* [ ] Project Details
-* [ ] Assign Members
+* [x] Create Project
+* [x] Edit Project
+* [x] Delete Project
+* [x] Project Details
+* [ ] Assign Members (deferred — project members currently mirror organization members)
 
 ---
 
@@ -184,17 +184,17 @@
 
 ## Board
 
-* [ ] Create Board
-* [ ] Default Columns
-* [ ] Custom Columns
+* [x] Create Board
+* [x] Default Columns
+* [x] Custom Columns
 
 ## Tasks
 
-* [ ] Create Task
-* [ ] Edit Task
-* [ ] Delete Task
-* [ ] Drag & Drop
-* [ ] Persist Task Position
+* [x] Create Task
+* [x] Edit Task
+* [x] Delete Task
+* [x] Drag & Drop
+* [x] Persist Task Position
 
 ---
 

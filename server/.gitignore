@@ -3,3 +3,9 @@ node_modules
 .env
 
 /src/generated/prisma
+
+# Compiled TypeScript output (tsc emits next to sources)
+/src/**/*.js
+/src/**/*.js.map
+/src/**/*.d.ts
+/src/**/*.d.ts.map
