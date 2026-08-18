@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Loader2, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -19,7 +18,6 @@ import {
   type CreateProjectFormData,
 } from "@/features/projects/schemas/create-project.schema";
 import { BoardSection } from "@/features/board/components/board-section";
-import { ProtectedRoute } from "@/features/auth/components/protected-route";
 
 import { useOrganizationStore } from "@/store/organization.store";
 
@@ -109,188 +107,162 @@ export default function ProjectDetailPage() {
 
   if (isLoading || !project) {
     return (
-      <ProtectedRoute>
-        <main className="bg-background flex min-h-screen items-center justify-center">
-          <Loader2 className="text-muted-foreground size-6 animate-spin" />
-        </main>
-      </ProtectedRoute>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="text-muted-foreground size-6 animate-spin" />
+      </div>
     );
   }
 
   return (
-    <ProtectedRoute>
-      <main className="bg-background min-h-screen">
-        <div className="mx-auto min-h-screen max-w-4xl px-6 py-8 sm:px-8 lg:px-10">
-          <header className="flex flex-wrap items-center justify-between gap-4 border-b pb-6">
-            <div className="flex items-center gap-3">
-              <Link
-                href={`/dashboard/organizations/${orgId}/projects`}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Back to projects"
-              >
-                <ArrowLeft className="size-5" />
-              </Link>
+    <div className="space-y-8">
+      <div>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          {project.name}
+        </h1>
 
-              <div>
-                <p className="text-muted-foreground text-sm font-medium">
-                  {currentOrganization?.name ?? "Project"}
-                </p>
+        <p className="text-muted-foreground mt-1 text-sm">
+          {currentOrganization?.name}
+        </p>
+      </div>
 
-                <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-                  {project.name}
-                </h1>
-              </div>
-            </div>
-          </header>
+      <section>
+        <h2 className="text-muted-foreground mb-4 text-sm font-semibold uppercase tracking-wide">
+          Kanban board
+        </h2>
 
-          <div className="mt-8 space-y-8">
-            <section>
-              <h2 className="text-muted-foreground mb-4 text-sm font-semibold uppercase tracking-wide">
-                Kanban board
-              </h2>
+        <BoardSection orgId={orgId} projectId={projectId} />
+      </section>
 
-              <BoardSection orgId={orgId} projectId={projectId} />
-            </section>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle className="text-base">Project</CardTitle>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                <CardTitle className="text-base">Project</CardTitle>
+          {!editing && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setEditing(true)}
+            >
+              <Pencil className="mr-2 size-3.5" />
+              Edit
+            </Button>
+          )}
+        </CardHeader>
 
-                {!editing && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setEditing(true)}
-                  >
-                    <Pencil className="mr-2 size-3.5" />
-                    Edit
-                  </Button>
-                )}
-              </CardHeader>
+        <CardContent>
+          {editing ? (
+            <form
+              onSubmit={handleSubmit((data) => updateMutation.mutate(data))}
+              className="space-y-4"
+            >
+              <div className="space-y-2">
+                <Label htmlFor="name">Project name</Label>
 
-              <CardContent>
-                {editing ? (
-                  <form
-                    onSubmit={handleSubmit((data) =>
-                      updateMutation.mutate(data)
-                    )}
-                    className="space-y-4"
-                  >
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Project name</Label>
+                <Input
+                  id="name"
+                  {...register("name")}
+                  disabled={updateMutation.isPending}
+                />
 
-                      <Input
-                        id="name"
-                        {...register("name")}
-                        disabled={updateMutation.isPending}
-                      />
-
-                      {errors.name && (
-                        <p className="text-destructive text-sm">
-                          {errors.name.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="description">Description</Label>
-
-                      <textarea
-                        id="description"
-                        rows={4}
-                        className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:bg-input/50 dark:bg-input/30 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-2 text-base outline-none transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                        {...register("description")}
-                        disabled={updateMutation.isPending}
-                      />
-
-                      {errors.description && (
-                        <p className="text-destructive text-sm">
-                          {errors.description.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button type="submit" disabled={updateMutation.isPending}>
-                        {updateMutation.isPending && (
-                          <Loader2 className="mr-2 size-4 animate-spin" />
-                        )}
-                        Save
-                      </Button>
-
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setEditing(false)}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </form>
-                ) : (
-                  <dl className="space-y-3 text-sm">
-                    <div className="flex justify-between gap-8">
-                      <dt className="text-muted-foreground shrink-0">Name</dt>
-
-                      <dd className="font-medium">{project.name}</dd>
-                    </div>
-
-                    <div className="flex justify-between gap-8">
-                      <dt className="text-muted-foreground shrink-0">
-                        Description
-                      </dt>
-
-                      <dd className="font-medium">
-                        {project.description || "No description"}
-                      </dd>
-                    </div>
-
-                    <div className="flex justify-between gap-8">
-                      <dt className="text-muted-foreground shrink-0">
-                        Created
-                      </dt>
-
-                      <dd className="font-medium">
-                        {new Date(project.createdAt).toLocaleDateString()}
-                      </dd>
-                    </div>
-                  </dl>
-                )}
-              </CardContent>
-            </Card>
-
-            {isOwner && (
-              <Card className="border-destructive/40">
-                <CardHeader>
-                  <CardTitle className="text-destructive text-base">
-                    Danger zone
-                  </CardTitle>
-                </CardHeader>
-
-                <CardContent>
-                  <p className="text-muted-foreground mb-4 text-sm">
-                    Deleting this project removes its board and all tasks. This
-                    action cannot be undone.
+                {errors.name && (
+                  <p className="text-destructive text-sm">
+                    {errors.name.message}
                   </p>
+                )}
+              </div>
 
-                  <Button
-                    variant="destructive"
-                    onClick={handleDelete}
-                    disabled={deleteMutation.isPending}
-                  >
-                    {deleteMutation.isPending ? (
-                      <Loader2 className="mr-2 size-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="mr-2 size-4" />
-                    )}
-                    Delete project
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
-      </main>
-    </ProtectedRoute>
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+
+                <textarea
+                  id="description"
+                  rows={4}
+                  className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:bg-input/50 dark:bg-input/30 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-2 text-base outline-none transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                  {...register("description")}
+                  disabled={updateMutation.isPending}
+                />
+
+                {errors.description && (
+                  <p className="text-destructive text-sm">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <Button type="submit" disabled={updateMutation.isPending}>
+                  {updateMutation.isPending && (
+                    <Loader2 className="mr-2 size-4 animate-spin" />
+                  )}
+                  Save
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setEditing(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <dl className="space-y-3 text-sm">
+              <div className="flex justify-between gap-8">
+                <dt className="text-muted-foreground shrink-0">Name</dt>
+
+                <dd className="font-medium">{project.name}</dd>
+              </div>
+
+              <div className="flex justify-between gap-8">
+                <dt className="text-muted-foreground shrink-0">Description</dt>
+
+                <dd className="font-medium">
+                  {project.description || "No description"}
+                </dd>
+              </div>
+
+              <div className="flex justify-between gap-8">
+                <dt className="text-muted-foreground shrink-0">Created</dt>
+
+                <dd className="font-medium">
+                  {new Date(project.createdAt).toLocaleDateString()}
+                </dd>
+              </div>
+            </dl>
+          )}
+        </CardContent>
+      </Card>
+
+      {isOwner && (
+        <Card className="border-destructive/40">
+          <CardHeader>
+            <CardTitle className="text-destructive text-base">
+              Danger zone
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <p className="text-muted-foreground mb-4 text-sm">
+              Deleting this project removes its board and all tasks. This action
+              cannot be undone.
+            </p>
+
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              ) : (
+                <Trash2 className="mr-2 size-4" />
+              )}
+              Delete project
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 }

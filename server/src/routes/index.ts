@@ -7,12 +7,14 @@ import boardRoutes from "../modules/boards/boards.routes.js";
 import columnRoutes from "../modules/columns/columns.routes.js";
 import taskRoutes from "../modules/tasks/tasks.routes.js";
 import userRoutes from "../modules/users/users.routes.js";
+import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
 
 const router = Router();
 
 router.use("/auth", authRoutes);
 router.use("/organizations", organizationRoutes);
 router.use("/organizations/:orgId/projects", projectRoutes);
+router.use("/organizations/:orgId/dashboard", dashboardRoutes);
 router.use("/organizations/:orgId/projects/:projectId/board", boardRoutes);
 router.use(
   "/organizations/:orgId/projects/:projectId/board/columns",

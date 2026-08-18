@@ -1,6 +1,6 @@
 # Orbit – TASKS.md
 
-> **Project Status:** 🟢 MVP Feature Complete — Phases 1–7 done. Remaining: Phase 8 (Deployment, Docs, Testing).
+> **Project Status:** 🟢 MVP Feature Complete — Phases 1–8 done. Remaining: Phase 9 (Deployment, Docs, Testing) + deferred Assign Members.
 
 ---
 
@@ -226,7 +226,179 @@
 
 ---
 
-# Phase 8 — Testing, Deployment & Documentation
+# Phase 8 — Dashboard & UI/UX Polish
+
+> **Purpose:** Transform the current functional MVP interface into a polished, modern, responsive SaaS experience before deployment.
+
+---
+
+## Dashboard
+
+### Application Shell
+
+- [x] Create responsive application sidebar
+- [x] Add Orbit branding
+- [x] Add Overview navigation
+- [x] Add Projects navigation
+- [x] Add Tasks navigation
+- [x] Add Members navigation
+- [x] Add Settings navigation
+- [x] Add Profile navigation
+- [x] Add Logout action
+- [x] Add responsive mobile navigation
+
+### Top Navigation
+
+- [x] Add search interface
+- [x] Display authenticated user
+- [x] Display user email/avatar
+- [x] Add account/profile access
+- [x] Add responsive top navigation
+
+### Dashboard Overview
+
+- [x] Add personalized welcome section
+- [x] Add workspace summary
+- [x] Add total projects statistic
+- [x] Add total tasks statistic
+- [x] Add active tasks statistic
+- [x] Add completed tasks statistic
+
+### Recent Projects
+
+- [x] Display real projects from API
+- [x] Display project task counts
+- [x] Display project progress
+- [x] Add project navigation
+- [x] Add empty state when no projects exist
+
+### Recent Activity
+
+- [x] Display recent workspace activity
+- [x] Display task activity
+- [x] Display member activity
+- [x] Display comment activity
+- [x] Add empty state when no activity exists
+
+---
+
+## UI/UX Polish
+
+### Responsive Design
+
+- [x] Desktop layout
+- [x] Tablet layout
+- [x] Mobile layout
+- [x] Responsive sidebar
+- [x] Responsive cards
+- [x] Responsive tables/lists
+
+### Loading States
+
+- [x] Dashboard loading state
+- [x] Project loading state
+- [x] Task loading state
+- [x] Member loading state
+- [x] Button loading states
+
+### Empty States
+
+- [x] No organizations
+- [x] No projects
+- [x] No tasks
+- [x] No members
+- [x] No activity
+
+### Error States
+
+- [x] API error handling
+- [x] Network error handling
+- [x] Authentication error handling
+- [x] User-friendly error messages
+
+### Visual Consistency
+
+- [x] Consistent spacing
+- [x] Consistent typography
+- [x] Consistent buttons
+- [x] Consistent cards
+- [x] Consistent forms
+- [x] Consistent navigation
+- [x] Consistent responsive behavior
+- [x] Dark mode compatibility
+
+---
+
+## Dashboard Data
+
+The dashboard should use **real application data** rather than hardcoded demo values.
+
+```text
+Organizations
+      ↓
+Projects
+      ↓
+Tasks
+      ↓
+Members
+      ↓
+Activity
+      ↓
+Dashboard
+```
+
+Dashboard statistics should be calculated from the actual user's organization and project data.
+
+---
+
+## Definition of Done
+
+The UI/UX Polish phase is complete when:
+
+- [x] Dashboard feels like a production SaaS application
+- [x] Dashboard uses real backend data
+- [x] Navigation works across the application
+- [x] Dashboard is fully responsive
+- [x] Loading states exist
+- [x] Empty states exist
+- [x] Error states exist
+- [x] Existing MVP functionality remains intact
+- [x] No major UI inconsistencies remain
+
+---
+
+## Target Dashboard
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ Orbit                    Search...        John   ⚙   Logout │
+├───────────────┬──────────────────────────────────────────────┤
+│               │                                              │
+│  Workspace    │  Good morning, John 👋                       │
+│               │  Here's what's happening across your work.   │
+│  Overview     │                                              │
+│  Projects     │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐│
+│  Tasks        │  │Projects│ │ Tasks  │ │ Active │ │ Done   ││
+│  Members      │  │   4    │ │  18    │ │   7    │ │  11    ││
+│               │  └────────┘ └────────┘ └────────┘ └────────┘│
+│  ─────────    │                                              │
+│  Settings     │  Recent Projects                             │
+│  Profile      │  ┌─────────────────────────────────────────┐ │
+│               │  │ Website Redesign       8 tasks   →     │ │
+│               │  │ Orbit Development      14 tasks  →     │ │
+│               │  │ Marketing Campaign     6 tasks   →     │ │
+│               │  └─────────────────────────────────────────┘ │
+│               │                                              │
+│               │  Recent Activity                             │
+│               │  • John created a task                       │
+│               │  • Sarah moved "Landing Page" to Done        │
+│               │  • Mike joined the organization              │
+└───────────────┴──────────────────────────────────────────────┘
+```
+
+**This phase does not add new business features.** It improves the presentation and usability of the existing MVP before Phase 9 deployment/finalization.
+
+# Phase 9 — Testing, Deployment & Documentation
 
 ## Deployment
 
@@ -278,10 +450,3 @@
 - Update this file after every development session.
 
 ---
-
-# Changelog
-
-- Phase 1 cleanup: `.gitignore` was empty — filled it in and untracked `node_modules/`, `server/.env`, and compiled artifacts that had been committed.
-- Server build fixed: `tsconfig.json` now emits to `dist/` (was emitting `.js`/`.d.ts` into `src/`, breaking `npm start`).
-- Code quality: ESLint + Prettier configured for client (Next default config + Prettier) and server (typescript-eslint flat config); Husky pre-commit + lint-staged at root.
-- Server TypeScript downgraded `^7.0.2` → `^5.9.3` because `typescript-eslint` does not yet support TS 7.

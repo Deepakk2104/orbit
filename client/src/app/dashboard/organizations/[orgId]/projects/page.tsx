@@ -1,12 +1,9 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 
 import { ProjectList } from "@/features/projects/components/project-list";
 import { CreateProjectForm } from "@/features/projects/components/create-project-form";
-import { ProtectedRoute } from "@/features/auth/components/protected-route";
 
 import { useOrganizationStore } from "@/store/organization.store";
 
@@ -21,54 +18,38 @@ export default function ProjectsPage() {
   );
 
   return (
-    <ProtectedRoute>
-      <main className="bg-background min-h-screen">
-        <div className="mx-auto min-h-screen max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
-          <header className="flex flex-wrap items-center justify-between gap-4 border-b pb-6">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/dashboard/organizations"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Back to organizations"
-              >
-                <ArrowLeft className="size-5" />
-              </Link>
+    <div className="space-y-8">
+      <div>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          {currentOrganization?.name ?? "Projects"}
+        </h1>
 
-              <div>
-                <p className="text-muted-foreground text-sm font-medium">
-                  Orbit
-                </p>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Manage your projects and boards.
+        </p>
+      </div>
 
-                <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-                  {currentOrganization?.name ?? "Projects"}
-                </h1>
-              </div>
-            </div>
-          </header>
+      <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+        <section className="space-y-4">
+          <h2 className="text-muted-foreground text-sm font-semibold uppercase tracking-wide">
+            Projects
+          </h2>
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
-            <section className="space-y-4">
-              <h2 className="text-muted-foreground text-sm font-semibold uppercase tracking-wide">
-                Projects
-              </h2>
+          <ProjectList orgId={orgId} />
+        </section>
 
-              <ProjectList orgId={orgId} />
-            </section>
+        <aside>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Create project</CardTitle>
+            </CardHeader>
 
-            <aside>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Create project</CardTitle>
-                </CardHeader>
-
-                <CardContent>
-                  <CreateProjectForm orgId={orgId} />
-                </CardContent>
-              </Card>
-            </aside>
-          </div>
-        </div>
-      </main>
-    </ProtectedRoute>
+            <CardContent>
+              <CreateProjectForm orgId={orgId} />
+            </CardContent>
+          </Card>
+        </aside>
+      </div>
+    </div>
   );
 }
