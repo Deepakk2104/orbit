@@ -128,7 +128,19 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       <nav className="flex flex-1 flex-col gap-1" aria-label="Main navigation">
         {navItems.map((item) => {
           const isActive =
-            item.href === "/" ? pathname === "/" : pathname === item.href;
+            item.href === "/"
+              ? pathname === "/"
+              : item.href.includes("/organizations") &&
+                  (pathname === "/dashboard/organizations" ||
+                    pathname === "/dashboard/organizations/projects" ||
+                    pathname === "/dashboard/organizations/members")
+                ? item.label ===
+                  (pathname === "/dashboard/organizations/projects"
+                    ? "Projects"
+                    : pathname === "/dashboard/organizations/members"
+                      ? "Members"
+                      : "Settings")
+                : pathname === item.href;
 
           return (
             <Link
