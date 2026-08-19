@@ -8,6 +8,7 @@ import columnRoutes from "../modules/columns/columns.routes.js";
 import taskRoutes from "../modules/tasks/tasks.routes.js";
 import userRoutes from "../modules/users/users.routes.js";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
+import healthRoutes from "../modules/health/health.routes.js";
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.use(
 router.use("/organizations/:orgId/projects/:projectId", taskRoutes);
 router.use("/invitations", invitationRoutes);
 router.use("/users", userRoutes);
+router.use("/health", healthRoutes);
 
 export default router;
