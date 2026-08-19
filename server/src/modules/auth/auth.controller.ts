@@ -18,10 +18,12 @@ const REFRESH_COOKIE = "refreshToken";
 const REFRESH_TOKEN_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const setRefreshCookie = (res: Response, token: string) => {
+  const isProd = process.env.NODE_ENV === "production";
+
   res.cookie(REFRESH_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     maxAge: REFRESH_TOKEN_MAX_AGE_MS,
   });
 };
@@ -131,10 +133,12 @@ export const me = async (req: AuthRequest, res: Response) => {
   }
 };
 export const logout = (_req: Request, res: Response) => {
+  const isProd = process.env.NODE_ENV === "production";
+
   res.clearCookie(REFRESH_COOKIE, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
   });
 
   return res.status(200).json({
